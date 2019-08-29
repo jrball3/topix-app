@@ -1,25 +1,24 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
 import TabBarIcon from '../components/TabBarIcon';
-import LoginScreen from '../screens/LoginScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import CreateAccountScreen from '../screens/create-account/Screen';
+import SettingsScreen from '../screens/settings/SettingsScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
 });
 
-const LoginStack = createStackNavigator(
+const CreateAccountStack = createStackNavigator(
   {
-    Login: LoginScreen,
+    CreateAccount: CreateAccountScreen,
   },
   config
 );
 
-LoginStack.navigationOptions = {
-  tabBarLabel: 'Login',
+CreateAccountStack.navigationOptions = {
+  tabBarLabel: 'CreateAccount',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -32,7 +31,7 @@ LoginStack.navigationOptions = {
   ),
 };
 
-LoginStack.path = '';
+CreateAccountStack.path = '';
 
 const SettingsStack = createStackNavigator(
   {
@@ -51,7 +50,7 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  LoginStack,
+  CreateAccountStack,
   SettingsStack,
 });
 
