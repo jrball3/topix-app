@@ -13,16 +13,4 @@ const store = createStore(
   storeEnhancers(applyMiddleware(thunk, logger))
 );
 
-// const next = store.dispatch
-// store.dispatch = function dispatchAndLog(action) {
-//   console.log('dispatching', action(store.dispatch, store.getState))
-//   let result = next(action)
-//   console.log('next state', store.getState())
-//   return result
-// }
-
-// Logger with default options
-
-
-
 export default store;
