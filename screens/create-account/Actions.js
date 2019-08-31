@@ -1,4 +1,5 @@
 import UserAPI from '../../apis/user';
+// import { NavigationActions } from 'react-navigation'
 
 export const UPDATE_FIELD = 'UPDATE_FIELD'
 export const updateField = ({ field, value }) => 
@@ -16,15 +17,17 @@ export const createAccount = ({ username, password, email }) => async (dispatch)
   await dispatch({ type: CREATE_ACCOUNT_REQUEST, username, password, email })
   const api = new UserAPI()
   return api.createAccount({ username, password, email })
-    .then((response) => {
+    .then(async (response) => {
       const { data } = response;
-      return dispatch({ 
+      await dispatch({ 
         type: CREATE_ACCOUNT_SUCCESS,
         username,
         password,
         email, 
         data,
       })
+
+      // dispatch(NavigationActions.navigate({ routeName: 'Route' });
     })
     .catch((error) => {
       const { response } = error;
