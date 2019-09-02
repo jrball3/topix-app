@@ -10,7 +10,6 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  console.log('Caught in create-account: ' + JSON.stringify(action))
   switch (action.type) {
     
     case UPDATE_FIELD: 

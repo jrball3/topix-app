@@ -7,9 +7,10 @@ import TopixTheme from '../../themes/TopixTheme';
 import Layout from '../../constants/Layout';
 import { updateField, createAccount } from './Actions';
 import { selectState } from './Helpers';
+import { NavigationActions } from 'react-navigation'
+
 
 const mapDispatchToProps = dispatch => {
-  console.log('dispatch is ' + JSON.stringify(dispatch))
   return bindActionCreators({
     updateField,
     createAccount,
@@ -136,11 +137,16 @@ const CreateAccountScreen = (props) => {
       <View style={{ ...commonViewStyle }}>
         <Button
           title="Create new account"
-          onPress={() => props.createAccount({ 
-            username: props.username,
-            email: props.email,
-            password: props.password,
-          })}
+          // onPress={() => props.createAccount({ 
+          //   navigation: props.navigation,
+          //   username: props.username,
+          //   email: props.email,
+          //   password: props.password,
+          // })}
+          onPress={() => {
+            console.log(props.naviation)
+            props.navigation.navigate("App")
+          }}
         />
       </View>
 
@@ -148,9 +154,5 @@ const CreateAccountScreen = (props) => {
     </ThemeProvider>
   );
 }
-
-CreateAccountScreen.navigationOptions = {
-  header: null,
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAccountScreen);

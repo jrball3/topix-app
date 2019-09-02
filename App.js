@@ -6,7 +6,8 @@ import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Navigator from './navigation/Navigator';
+import AppFlow from './navigation/AppFlow';
+import { createAppContainer } from 'react-navigation';
 
 export default function App(props) {
   let ret;
@@ -21,10 +22,11 @@ export default function App(props) {
       />
     );
   } else {
+    const App = createAppContainer(AppFlow);
     ret = (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <Navigator />
+          <App />
         </View>
     );
   }
