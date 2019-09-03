@@ -144,7 +144,6 @@ const CreateAccountScreen = (props) => {
           //   password: props.password,
           // })}
           onPress={() => {
-            console.log(props.naviation)
             props.navigation.navigate("App")
           }}
         />

@@ -2597,7 +2597,7 @@ expo-keep-awake@~6.0.0:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-6.0.0.tgz#e0d6d1263c6a73488272a62aef98312ab25cab1f"
   integrity sha512-MAtZknf6FtIC0ipkDS2FVa87al8YBsrpsQ2qMf+H/cI6FOd6aahaggN4x75xGnt5UzozgWfjhGNCi1XCr14rJw==
 
-expo-linear-gradient@~6.0.0:
+expo-linear-gradient@^6.0.0, expo-linear-gradient@~6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-6.0.0.tgz#5fb0fb955dd22ef4ab032e543cb1c249885bf0b5"
   integrity sha512-TGHSK7MsoU1wZXx9uEivMggAR/KT4wTSE0xBfhB8qsziGXoHZdoT79/tZ3HyWtCG7+JVUEFXfUOBxtOlZOu5tg==
@@ -5643,6 +5643,13 @@ react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   integrity sha512-Bke8KkDcDhvB/z0AS7MnQKMD2p6Kwfc1rSKlMOvg9CC5CnClQ2QEnhPSbwegKDYhUkBI92iH/BYy7hNSm5kbUQ==
   dependencies:
     prop-types "^15.6.1"
+
+react-native-touchable-scale@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-touchable-scale/-/react-native-touchable-scale-2.0.0.tgz#13a83a9423e46049cad3e3cc306eba2130883cb1"
+  integrity sha512-Dh0tSVJ4hv+gMDx3x7YHEO9Dxsw6JPrIAc6NVpPB6i8QlV7A5ty8l/4nL/Yl2pYHCzesj26zughnBSniMKTVqA==
+  dependencies:
+    prop-types "^15.6.0"
 
 react-native-view-shot@2.6.0:
   version "2.6.0"

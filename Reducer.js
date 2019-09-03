@@ -1,15 +1,32 @@
 import { combineReducers } from 'redux'
 import createAccountReducer from './screens/create-account/Reducer';
+import authReducer from './screens/auth/Reducer';
+import { SET_SESSION } from './Actions';
 
-const initialRoot = {};
+const initialRoot = {
+  session: {
+    authToken: 'testToken',
+  },
+};
 
 function root(state = initialRoot, action) {
   console.log('Caught in root: ' + JSON.stringify(action))
-  return state;
+  switch ( action.type ) {
+
+    case SET_SESSION:
+      return ({
+        ...state,
+        session: state.session,
+      })
+
+    default:
+      return state;
+  }
 };
 
 const rootReducer = combineReducers({
   root,
+  auth: authReducer,
   createAccount: createAccountReducer,
 })
 
