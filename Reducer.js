@@ -5,7 +5,7 @@ import { SET_SESSION } from './Actions';
 
 const initialRoot = {
   session: {
-    authToken: 'testToken',
+    authToken: '',
   },
 };
 
@@ -16,7 +16,7 @@ function root(state = initialRoot, action) {
     case SET_SESSION:
       return ({
         ...state,
-        session: state.session,
+        session: action.session,
       })
 
     default:

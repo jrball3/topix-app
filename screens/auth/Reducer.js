@@ -1,5 +1,5 @@
 import {
-  UPDATE_FIELD,
+  UPDATE_AUTH_FIELD,
   CHECK_SESSION_REQUEST,
   CHECK_SESSION_FAILURE,
   CHECK_SESSION_SUCCESS,
@@ -22,7 +22,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
 
-    case UPDATE_FIELD: 
+    case UPDATE_AUTH_FIELD: 
       return {
         ...state,
         [action.field]: action.value,

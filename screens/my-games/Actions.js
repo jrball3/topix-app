@@ -1,4 +1,4 @@
-import GameApi from '../../apis/game';
+import GameAPI from '../../apis/game';
 
 export const FETCH_GAMES_REQUEST = 'FETCH_GAMES_REQUEST'
 export const FETCH_GAMES_FAILURE = 'FETCH_GAMES_FAILURE'
@@ -11,15 +11,17 @@ export const fetchGames = dispatch => async ({ authToken }) => {
   let response;
   try {
     const { status, data } = response;
-    response = await GameApi.fetchGames({ authToken })
+    response = await GameAPI.fetchGames({ authToken })
     await dispatch({ type: FETCH_GAMES_SUCCESS, status, data })
   } catch (error) {
-    const { response } = error;
-    const { status, data } = response;
-    await dispatch({ 
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    await dispatch({
       type: FETCH_GAMES_FAILURE,
       status,
       data,
+      message,
     })
   }
 }

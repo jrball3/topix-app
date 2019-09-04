@@ -137,15 +137,15 @@ const CreateAccountScreen = (props) => {
       <View style={{ ...commonViewStyle }}>
         <Button
           title="Create new account"
-          // onPress={() => props.createAccount({ 
-          //   navigation: props.navigation,
-          //   username: props.username,
-          //   email: props.email,
-          //   password: props.password,
-          // })}
-          onPress={() => {
-            props.navigation.navigate("App")
-          }}
+          onPress={() => props.createAccount({ 
+            navigation: props.navigation,
+            username: props.username,
+            email: props.email,
+            password: props.password,
+          })}
+          // onPress={() => {
+          //   props.navigation.navigate("App")
+          // }}
         />
       </View>
 

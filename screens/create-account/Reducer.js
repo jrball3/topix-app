@@ -1,5 +1,5 @@
 import {
-  UPDATE_FIELD,
+  UPDATE_CREATE_FIELD,
 } from './Actions';
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     
-    case UPDATE_FIELD: 
+    case UPDATE_CREATE_FIELD: 
       return {
         ...state,
         [action.field]: action.value,

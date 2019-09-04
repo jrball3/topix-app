@@ -53,13 +53,14 @@ class AuthScreen extends React.Component {
       sessionChecked,
       checkingSession,
       needLogin,
+      loggedIn,
       session,
     } = this.props;
     
     const { authToken } = session;
     if (authToken && !checkingSession && !sessionChecked) {
       this.props.checkSession({ authToken });
-    } else if (sessionChecked && !needLogin) {
+    } else if ((sessionChecked && !needLogin) || (loggedIn)) {
       this.props.navigation.navigate("App");
     }
   }

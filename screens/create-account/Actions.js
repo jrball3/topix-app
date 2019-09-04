@@ -1,10 +1,10 @@
 import UserAPI from '../../apis/user';
 import { NavigationActions } from 'react-navigation'
 
-export const UPDATE_FIELD = 'UPDATE_FIELD'
+export const UPDATE_CREATE_FIELD = 'UPDATE_CREATE_FIELD'
 export const updateField = ({ field, value }) => 
   (dispatch) => dispatch({
-    type: UPDATE_FIELD,
+    type: UPDATE_CREATE_FIELD,
     field,
     value,
   })
@@ -20,32 +20,29 @@ export const createAccount = ({
   email,
 }) => async (dispatch) => {
   await dispatch({ type: CREATE_ACCOUNT_REQUEST, username, password, email })
-  // const api = new UserAPI()
-  // return api.createAccount({ username, password, email })
-  //   .then(async (response) => {
-  //     const { data } = response;
-      await dispatch({ 
-        type: CREATE_ACCOUNT_SUCCESS,
-        username,
-        password,
-        email, 
-        // data,
-      })
-      // return navigation.dispatch(
-      //   NavigationActions.navigate({ routeName: "Dashboard" })
-      // );
-
-    // })
-    // .catch((error) => {
-    //   const { response } = error;
-    //   const { status, data } = response;
-    //   dispatch({ 
-    //     type: CREATE_ACCOUNT_FAILURE,
-    //     username,
-    //     password,
-    //     email,
-    //     status,
-    //     data,
-    //   })
-    // })
+  try {
+    const createResponse = await UserAPI.createAccount({ username, password, email })
+    const { data } = createResponse;
+    await dispatch({ 
+      type: CREATE_ACCOUNT_SUCCESS,
+      username,
+      password,
+      email, 
+      data,
+    })
+    return navigation.dispatch(
+      NavigationActions.navigate({ routeName: "Auth" })
+    );
+  }
+  catch (error) {
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    await dispatch({
+      type: CREATE_ACCOUNT_FAILURE,
+      status,
+      data,
+      message,
+    })
+  }
 }

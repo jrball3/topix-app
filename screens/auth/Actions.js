@@ -1,9 +1,10 @@
 import { setSession } from '../../Actions';
+import AuthAPI from '../../apis/auth';
 
-export const UPDATE_FIELD = 'UPDATE_FIELD'
+export const UPDATE_AUTH_FIELD = 'UPDATE_AUTH_FIELD'
 export const updateField = ({ field, value }) => 
   (dispatch) => dispatch({
-    type: UPDATE_FIELD,
+    type: UPDATE_AUTH_FIELD,
     field,
     value,
   })
@@ -17,13 +18,36 @@ export const checkSession = ({ authToken }) => async dispatch => {
     authToken,
   });
 
-  // TODO: Check session request to api
-  const valid = false;
-
-  await dispatch({
-    type: CHECK_SESSION_SUCCESS,
-    valid,
-  });
+  try {
+    const checkResponse = await AuthAPI.check({ token: authToken })
+    const { status, data } = checkResponse;
+    await dispatch({
+      type: CHECK_SESSION_SUCCESS,
+      status,
+      data,
+      valid: true,
+    });
+  } catch (error) {
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    if (response && response.status == 401) {
+      await dispatch({
+        type: CHECK_SESSION_SUCCESS,
+        valid: false,
+        data,
+        status,
+        message,
+      });
+    } else {
+      await dispatch({
+        type: LOGIN_REQUEST_FAILURE,
+        status,
+        data,
+        message,
+      })
+    }
+  }
 };
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -36,16 +60,34 @@ export const login = ({ username, password }) => async dispatch => {
     password
   })
 
-  // TODO: Login request to api
-  const authToken = 'fakeToken';
+  try {
+    const loginResponse = await AuthAPI.auth({ username, password })
+    const { status, data } = loginResponse;
+    const { token: authToken } = data;
 
-  await dispatch({
-    type: LOGIN_REQUEST_SUCCESS,
-    authToken,
-  })
+    await dispatch({
+      type: LOGIN_REQUEST_SUCCESS,
+      status,
+      authToken,
+      valid: true,
+    })
+  
+    await dispatch(setSession({
+      username,
+      authToken,
+    }));
 
-  await dispatch(setSession({
-    username,
-    authToken,
-  }));
+  } catch (error) {
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    if (response) {
+      await dispatch({
+        type: LOGIN_REQUEST_FAILURE,
+        status,
+        data,
+        message,
+      })
+    }
+  }
 };
