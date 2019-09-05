@@ -1,18 +1,17 @@
 import {
-  UPDATE_CREATE_ACCOUNT_FIELD,
+  UPDATE_CREATE_GAME_FIELD,
 } from './Actions';
 
 const initialState = {
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
+  gameName: '',
+  gameType: 'Karma Hole',
+  players: [],
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     
-    case UPDATE_CREATE_ACCOUNT_FIELD: 
+    case UPDATE_CREATE_GAME_FIELD: 
       return {
         ...state,
         [action.field]: action.value,

@@ -4,100 +4,118 @@ import { bindActionCreators } from 'redux'
 import { ThemeProvider, ListItem } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import { selectState } from './Helpers';
-import { View } from 'react-native';
+import { View, ActivityIndicator, Text } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { LinearGradient } from 'expo-linear-gradient';
+import { fetchGames } from './Actions';
+import { getSession } from '../../Helpers';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
-
+    fetchGames,
   }, dispatch)
 };
 
 const mapStateToProps = state => {
   return {
     ...selectState(state),
+    session: getSession(state),
   };
 };
 
-const list2 = [
-  {
-    name: 'Amy Farha',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    subtitle: 'Vice President',
-    linearGradientColors: ['#FF9800', '#F44336'],
-  },
-  {
-    name: 'Chris Jackson',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    subtitle: 'Vice Chairman',
-    linearGradientColors: ['#3F51B5', '#2196F3'],
-  },
-  {
-    name: 'Amanda Martin',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-    subtitle: 'CEO',
-    linearGradientColors: ['#FFD600', '#FF9800'],
-  },
-  {
-    name: 'Christy Thomas',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg',
-    subtitle: 'Lead Developer',
-    linearGradientColors: ['#4CAF50', '#8BC34A'],
-  },
-  {
-    name: 'Melissa Jones',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/nuraika/128.jpg',
-    subtitle: 'CTO',
-    linearGradientColors: ['#F44336', '#E91E63'],
-  },
-];
+const commonViewStyle = {
+  backgroundColor: TopixTheme.backgroundColor,
+  alignItems: 'center',
+  paddingTop: 30,
+  paddingBottom: 30,
+}
 
 class MyGamesScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.renderGames = this.renderGames.bind(this);
+    this.renderError = this.renderError.bind(this);
+    this.renderLoadingContent = this.renderLoadingContent.bind(this);
+  }
+  
+
+  componentDidMount() {
+    this.props.fetchGames({
+      authToken: this.props.session.authToken,
+    })
   }
 
-  componentDidMount(props) {
+  renderGames() {
+    const { games } = this.props;
+    return (
+      <View style={{
+        ...commonViewStyle,
+        paddingVertical: 8,
+      }}>
+        {games.map((l, i) => (
+          <ListItem
+            Component={TouchableScale}
+            friction={90}
+            tension={100}
+            activeScale={0.95}
+            key={i}
+            title={l.name}
+            titleStyle={{ color: 'white', fontWeight: 'bold' }}
+            subtitleStyle={{ color: 'white' }}
+            subtitle={l.type}
+            chevronColor="white"
+            chevron
+            containerStyle={{
+              marginHorizontal: 16,
+              marginVertical: 8,
+              borderRadius: 8,
+            }}
+          />
+        ))}
+      </View>
+    )
+  }
 
+  renderError() {
+    const { fetchingGamesError } = this.props;
+    const message = `We encountered an error ${fetchingGamesError.message}`;
+    return (
+      <View style={commonViewStyle}>
+        <Text>{message}</Text>
+      </View>
+    );
+  }
+
+  renderLoadingContent() {
+    return (
+      <View style={commonViewStyle}>
+        <ActivityIndicator 
+          size="large" 
+          color={TopixTheme.foregroundColor} 
+        />
+        <Text>Loading...</Text>
+      </View>
+    )
   }
 
   render() {
+    const { 
+      fetchingGamesError,
+      isFetchingGames,
+    } = this.props;
+
+    let content;
+    if (isFetchingGames) {
+      content = this.renderLoadingContent();
+    } else if (fetchingGamesError) {
+      content = this.renderError();
+    } else {
+      content = this.renderGames();
+    }
+
     return (
       <ThemeProvider theme={TopixTheme}>
-        <View style={{ backgroundColor: '#ECEFF1', paddingVertical: 8 }}>
-          {list2.map((l, i) => (
-            <ListItem
-              Component={TouchableScale}
-              friction={90}
-              tension={100}
-              activeScale={0.95}
-              leftAvatar={{ rounded: true, source: { uri: l.avatar_url } }}
-              key={i}
-              linearGradientProps={{
-                colors: l.linearGradientColors,
-                start: [1, 0],
-                end: [0.2, 0],
-              }}
-              ViewComponent={LinearGradient}
-              title={l.name}
-              titleStyle={{ color: 'white', fontWeight: 'bold' }}
-              subtitleStyle={{ color: 'white' }}
-              subtitle={l.subtitle}
-              chevronColor="white"
-              chevron
-              containerStyle={{
-                marginHorizontal: 16,
-                marginVertical: 8,
-                borderRadius: 8,
-              }}
-            />
-          ))}
-        </View>
+        {content}
       </ThemeProvider>
     );
   }

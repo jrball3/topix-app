@@ -1,8 +1,8 @@
 import { createSwitchNavigator } from 'react-navigation';
 import CreateAccountScreen from '../screens/create-account/Screen';
 
-const CreateStackNav = createSwitchNavigator({
+const CreateFlow = createSwitchNavigator({
   CreateAccount: CreateAccountScreen,
 });
 
-export default CreateStackNav;
+export default CreateFlow;

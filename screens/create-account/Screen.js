@@ -134,7 +134,6 @@ const CreateAccountScreen = (props) => {
           onChangeText={text => props.updateField({field: 'confirmPassword', value: text})}
         />
 
-      <View style={{ ...commonViewStyle }}>
         <Button
           title="Create new account"
           onPress={() => props.createAccount({ 
@@ -143,11 +142,7 @@ const CreateAccountScreen = (props) => {
             email: props.email,
             password: props.password,
           })}
-          // onPress={() => {
-          //   props.navigation.navigate("App")
-          // }}
         />
-      </View>
 
       </View>
     </ThemeProvider>

@@ -5,13 +5,12 @@ export const FETCH_GAMES_FAILURE = 'FETCH_GAMES_FAILURE'
 export const FETCH_GAMES_SUCCESS = 'FETCH_GAMES_SUCCESS'
 
 
-export const fetchGames = dispatch => async ({ authToken }) => {
-  await dispatch({ type: FETCH_GAMES_REQUEST })
+export const fetchGames = ({ authToken }) => async (dispatch) => {
+  await dispatch({ type: FETCH_GAMES_REQUEST, authToken })
 
-  let response;
   try {
+    const response = await GameAPI.fetchGames({ authToken })
     const { status, data } = response;
-    response = await GameAPI.fetchGames({ authToken })
     await dispatch({ type: FETCH_GAMES_SUCCESS, status, data })
   } catch (error) {
     const { response, message } = error;

@@ -1,10 +1,10 @@
 import UserAPI from '../../apis/user';
 import { NavigationActions } from 'react-navigation'
 
-export const UPDATE_CREATE_FIELD = 'UPDATE_CREATE_FIELD'
+export const UPDATE_CREATE_ACCOUNT_FIELD = 'UPDATE_CREATE_ACCOUNT_FIELD'
 export const updateField = ({ field, value }) => 
   (dispatch) => dispatch({
-    type: UPDATE_CREATE_FIELD,
+    type: UPDATE_CREATE_ACCOUNT_FIELD,
     field,
     value,
   })

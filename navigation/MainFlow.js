@@ -1,31 +1,30 @@
+import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 import MyGamesScreen from '../screens/my-games/Screen';
 import TopixTheme from '../themes/TopixTheme';
 
-MyGamesScreen.navigationOptions = {
-  title: 'My Games',
-  header: null,
-};
-
-const config  = {
-  navigationOptions: ({ navigation }) => ({
+const navigatorConfig  = {
+  defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
       const { routeName } = navigation.state;
       let iconName;
       if (routeName === 'My Games') {
-        iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+        iconName = "logo-game-controller-a";
       }
-      return <IconComponent name={iconName} size={25} color={tintColor} />;
+      return <Icon type="ionicon" name={iconName} size={25} color={tintColor} />;
     },
   }),
   tabBarOptions: {
-    activeTintColor: TopixTheme.tintColor,
-    inactiveTintColor: TopixTheme.inactiveTintColor,
+    activeTintColor: TopixTheme.tabIconSelected,
+    inactiveTintColor: TopixTheme.tabIconDefault,
   },
 };
 
-const MainFlow = createBottomTabNavigator({
+const routeConfigs = {
   'My Games': MyGamesScreen,
-}, config);
+};
+
+const MainFlow = createBottomTabNavigator(routeConfigs, navigatorConfig);
 
 export default MainFlow;
