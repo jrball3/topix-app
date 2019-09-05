@@ -68,13 +68,14 @@ const CreateGameScreen = (props) => {
           ref={input => (this.gameName = input)}
           value={props.gameName}
           onSubmitEditing={() => {
-            this.email2Input.focus();
+            this.typePicker.focus();
           }}
           onChangeText={text => props.updateField({field: 'gameName', value: text})}
         />
 
         <Picker
           selectedValue={this.props.gameType}
+          ref={picker => (this.typePicker = picker)}
           style={{height: 50, width: 100}}
           onValueChange={itemValue => props.updateField({field: 'gameType', value: itemValue})}>
           <Picker.Item label="Karma Hole" value="Karma Hole" />
