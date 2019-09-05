@@ -11,7 +11,8 @@ export const fetchGames = ({ authToken }) => async (dispatch) => {
   try {
     const response = await GameAPI.fetchGames({ authToken })
     const { status, data } = response;
-    await dispatch({ type: FETCH_GAMES_SUCCESS, status, data })
+    const { games } = data;
+    await dispatch({ type: FETCH_GAMES_SUCCESS, status, games })
   } catch (error) {
     const { response, message } = error;
     const status = response && response.status;

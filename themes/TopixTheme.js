@@ -38,6 +38,12 @@ const Input = {
   blurOnSubmit: false,
 }
 
+const Picker = {
+  containerStyle: {
+    width: Layout.window.width - 50,
+  }
+}
+
 const Icon = {
   iconStyle: {
     color: Colors.foregroundColor,
@@ -55,4 +61,5 @@ export default {
   Icon,
   Input,
   Button,
+  Picker,
 }

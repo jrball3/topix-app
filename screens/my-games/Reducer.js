@@ -37,6 +37,7 @@ const reducer = (state = initialState, action) => {
         fetchingGamesSuccess: true,
         fetchingGamesFailure: false,
         fetchingGamesError: null,
+        games: action.games,
       }
     
     default:

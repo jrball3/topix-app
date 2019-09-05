@@ -8,7 +8,6 @@ import Layout from '../../constants/Layout';
 import { updateField, createGame } from './Actions';
 import { selectState } from './Helpers';
 import { getSession } from '../../Helpers';
-import { NavigationActions } from 'react-navigation'
 
 
 const mapDispatchToProps = dispatch => {
@@ -74,16 +73,17 @@ const CreateGameScreen = (props) => {
         />
 
         <Picker
-          selectedValue={this.props.gameType}
+          selectedValue={props.gameType}
           ref={picker => (this.typePicker = picker)}
-          style={{height: 50, width: 100}}
+          style={{height: 50, width: 200}}
           onValueChange={itemValue => props.updateField({field: 'gameType', value: itemValue})}>
-          <Picker.Item label="Karma Hole" value="Karma Hole" />
+          <Picker.Item label="Karma Hole" value="KARMA_HOLE" />
         </Picker>
 
         <Button
           title="Create new game"
-          onPress={() => props.CreateGame({ 
+          onPress={() => props.createGame({ 
+            navigation: props.navigation,
             authToken: props.session.authToken,
             gameName: props.gameName,
             gameType: props.gameType,

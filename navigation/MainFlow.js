@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import MyGamesScreen from '../screens/my-games/Screen';
+import CreateGameScreen from '../screens/create-game/Screen';
 import TopixTheme from '../themes/TopixTheme';
 
 const navigatorConfig  = {
@@ -23,6 +24,7 @@ const navigatorConfig  = {
 
 const routeConfigs = {
   'My Games': MyGamesScreen,
+  'Create Game': CreateGameScreen,
 };
 
 const MainFlow = createBottomTabNavigator(routeConfigs, navigatorConfig);
