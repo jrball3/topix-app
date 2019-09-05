@@ -75,11 +75,13 @@ export const login = ({ navigation, username, password }) => async dispatch => {
       authToken,
       valid: true,
     })
-  
-    await dispatch(setSession({
+
+    const session = {
       username,
       authToken,
-    }));
+    }
+  
+    await dispatch(setSession({ session }));
 
     return navigation.dispatch(
       NavigationActions.navigate({ routeName: "My Games" })

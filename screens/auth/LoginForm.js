@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Keyboard } from 'react-native';
 import { Icon, Input, Button } from 'react-native-elements';
 
 const LoginForm = (props) => (
@@ -31,7 +31,7 @@ const LoginForm = (props) => (
       ref={input => (this.usernameInput = input)}
       value={props.username}
       onSubmitEditing={() => {
-        this.email2Input.focus();
+        this.password2Input.focus();
       }}
       onChangeText={text => props.updateField({
         field: 'username',
@@ -56,7 +56,7 @@ const LoginForm = (props) => (
       value={props.password}
       ref={input => (this.password2Input = input)}
       onSubmitEditing={() => {
-        this.confirmPassword2Input.focus();
+        Keyboard.dismiss()
       }}
       onChangeText={text => props.updateField({
         field: 'password',

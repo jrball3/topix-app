@@ -4,10 +4,12 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AppFlow from './navigation/AppFlow';
 import { createAppContainer } from 'react-navigation';
+import { setSession } from './Actions';
+import { getSessionStore } from './Helpers';
 
 export default function App(props) {
   let ret;
@@ -38,6 +40,23 @@ export default function App(props) {
   )
 }
 
+async function loadPersistedSession() {
+  try {
+    const session = await AsyncStorage.getItem(getSessionStore());
+    if (session !== null) {
+      console.log('Loading persisted session...')
+      const parsed = JSON.parse(session)
+      await Store.dispatch(setSession({ session: parsed, store: false }))
+      console.log('Persisted session loaded.')
+    } else {
+      console.log('No persisted session.')
+    }
+  } catch (error) {
+    console.error('Failed to retrieve persisted session.')
+    console.error(error)
+  }
+}
+
 async function loadResourcesAsync() {
   await Promise.all([
     Asset.loadAsync([
@@ -51,6 +70,7 @@ async function loadResourcesAsync() {
       // remove this if you are not using it in your app
       'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
     }),
+    loadPersistedSession(),
   ]);
 }
 
