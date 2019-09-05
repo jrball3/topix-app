@@ -82,7 +82,10 @@ class MyGamesScreen extends React.Component {
     const { fetchingGamesError } = this.props;
     const message = `We encountered an error ${fetchingGamesError.message}`;
     return (
-      <View style={commonViewStyle}>
+      <View style={{
+        ...commonViewStyle,
+        alignItems: 'center',
+      }}>
         <Text>{message}</Text>
       </View>
     );
@@ -90,7 +93,10 @@ class MyGamesScreen extends React.Component {
 
   renderLoadingContent() {
     return (
-      <View style={commonViewStyle}>
+      <View style={{
+        ...commonViewStyle,
+        alignItems: 'center',
+      }}>
         <ActivityIndicator 
           size="large" 
           color={TopixTheme.foregroundColor} 
