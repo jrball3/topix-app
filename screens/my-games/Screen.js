@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux'
 import { ThemeProvider, ListItem } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import { selectState } from './Helpers';
-import { View, ActivityIndicator, Text } from 'react-native';
+import { ScrollView, View, ActivityIndicator, Text } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { LinearGradient } from 'expo-linear-gradient';
 import { fetchGames } from './Actions';
 import { getSession } from '../../Helpers';
+import Layout from '../../constants/Layout';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
@@ -25,7 +26,6 @@ const mapStateToProps = state => {
 
 const commonViewStyle = {
   backgroundColor: TopixTheme.backgroundColor,
-  alignItems: 'center',
   paddingTop: 30,
   paddingBottom: 30,
 }
@@ -48,8 +48,10 @@ class MyGamesScreen extends React.Component {
   renderGames() {
     const { games } = this.props;
     return (
-      <View style={{
+      <ScrollView style={{
         ...commonViewStyle,
+        height: Layout.window.height,
+        width: Layout.window.width,
         paddingVertical: 8,
       }}>
         {games.map((l, i) => (
@@ -60,10 +62,10 @@ class MyGamesScreen extends React.Component {
             activeScale={0.95}
             key={i}
             title={l.name}
-            titleStyle={{ color: 'white', fontWeight: 'bold' }}
-            subtitleStyle={{ color: 'white' }}
+            titleStyle={{ color: TopixTheme.foregroundColor, fontWeight: 'bold' }}
+            subtitleStyle={{ color: TopixTheme.foregroundColor }}
             subtitle={l.type}
-            chevronColor="white"
+            chevronColor={TopixTheme.foregroundColor}
             chevron
             containerStyle={{
               marginHorizontal: 16,
@@ -72,7 +74,7 @@ class MyGamesScreen extends React.Component {
             }}
           />
         ))}
-      </View>
+      </ScrollView>
     )
   }
 

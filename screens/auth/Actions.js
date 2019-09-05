@@ -45,7 +45,7 @@ export const checkSession = ({ navigation, authToken }) => async dispatch => {
       });
     } else {
       await dispatch({
-        type: LOGIN_REQUEST_FAILURE,
+        type: CHECK_SESSION_FAILURE,
         status,
         data,
         message,
