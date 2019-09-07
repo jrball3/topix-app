@@ -1,9 +1,10 @@
 import React from 'react';
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import MyGamesScreen from '../screens/my-games/Screen';
 import CreateGameScreen from '../screens/create-game/Screen';
 import TopixTheme from '../themes/TopixTheme';
+import PlayGame from '../screens/play-game/Screen';
 
 const navigatorConfig  = {
   defaultNavigationOptions: ({ navigation }) => ({
@@ -27,6 +28,21 @@ const routeConfigs = {
   'Create Game': CreateGameScreen,
 };
 
-const MainFlow = createBottomTabNavigator(routeConfigs, navigatorConfig);
+
+const BottomNav = createBottomTabNavigator(routeConfigs, navigatorConfig);
+
+BottomNav.navigationOptions = {
+  header: null,
+}
+
+const MainFlow = createStackNavigator({
+  BottomNav,
+  "Play Game": {
+    screen: PlayGame,
+    navigationOptions: ({ navigation }) => ({
+      title: "Play Game",
+    }),
+  }
+})
 
 export default MainFlow;

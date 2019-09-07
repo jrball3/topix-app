@@ -10,6 +10,17 @@ import AppFlow from './navigation/AppFlow';
 import { createAppContainer } from 'react-navigation';
 import { setSession } from './Actions';
 import { getSessionStore } from './Helpers';
+import axios from 'axios';
+
+axios.interceptors.request.use(request => {
+  console.log('Starting Request', request)
+  return request
+})
+
+axios.interceptors.response.use(response => {
+  console.log('Response:', response)
+  return response
+})
 
 export default function App(props) {
   let ret;

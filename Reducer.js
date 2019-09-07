@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux'
+import { SET_SESSION } from './Actions';
 import createAccountReducer from './screens/create-account/Reducer';
 import authReducer from './screens/auth/Reducer';
 import createGameReducer from './screens/create-game/Reducer';
 import myGamesReducer from './screens/my-games/Reducer';
-import { SET_SESSION } from './Actions';
+import playGameReducer from './screens/play-game/Reducer';
 
 const initialRoot = {
   session: {
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   createAccount: createAccountReducer,
   createGame: createGameReducer,
   myGames: myGamesReducer,
+  playGame: playGameReducer,
 })
 
 export default rootReducer;

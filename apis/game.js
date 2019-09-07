@@ -2,16 +2,6 @@ import axios from 'axios';
 import urljoin from 'url-join';
 import { getAxiosConfig } from './helpers';
 
-axios.interceptors.request.use(request => {
-  console.log('Starting Request', request)
-  return request
-})
-
-axios.interceptors.response.use(response => {
-  console.log('Response:', response)
-  return response
-})
-
 const BACKEND_ROOT_URL = "http://35.236.219.61/topix-api/"
 const GAME_API_URL = urljoin(BACKEND_ROOT_URL, 'api/v1/game')
 

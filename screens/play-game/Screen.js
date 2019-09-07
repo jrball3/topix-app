@@ -4,15 +4,16 @@ import { bindActionCreators } from 'redux'
 import { ThemeProvider } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import { selectState } from './Helpers';
-import { ScrollView, View, ActivityIndicator, Text } from 'react-native';
-import { fetchGames } from './Actions';
+import { ScrollView, View, ActivityIndicator, Text, FlatList } from 'react-native';
+import { fetchPosts } from './Actions';
 import { getSession } from '../../Helpers';
+import Post from '../../components/Post';
+import ChatInput from '../../components/ChatInput';
 import Layout from '../../constants/Layout';
-import Game from '../../components/Game';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
-    fetchGames,
+    fetchPosts,
   }, dispatch)
 };
 
@@ -25,53 +26,66 @@ const mapStateToProps = state => {
 
 const commonViewStyle = {
   backgroundColor: TopixTheme.backgroundColor,
-  paddingTop: 30,
-  paddingBottom: 30,
+  paddingTop: 10,
+  paddingBottom: 10,
 }
 
-class MyGamesScreen extends React.Component {
+class PlayGameScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.renderGames = this.renderGames.bind(this);
+    this.renderGame = this.renderGame.bind(this);
     this.renderError = this.renderError.bind(this);
     this.renderLoadingContent = this.renderLoadingContent.bind(this);
+    this.onSend = this.onSend.bind(this);
   }
   
   componentDidMount() {
-    this.props.fetchGames({
+    this.props.fetchPosts({
       authToken: this.props.session.authToken,
+      gameId: this.props.navigation.state.params.gameId,
     })
   }
 
-  renderGames() {
-    const { 
-      navigation,
-      games,
-    } = this.props;
+  onSend(post) {
+    console.log('Sending ' + JSON.stringify(post))
+  }
 
+  renderGame() {
+    const { posts } = this.props;
     return (
-      <ScrollView style={{
+      <View style={{
         ...commonViewStyle,
         height: Layout.window.height,
         width: Layout.window.width,
-        paddingVertical: 8,
+        flex: 10,
       }}>
-        {games.map((l, i) => (
-          <Game
-            key={i}
-            navigation={navigation}
-            gameName={l.name}
-            gameType={l.type}
-            gameId={l.id}
-          />
-        ))}
-      </ScrollView>
+        <ScrollView style={{
+          flex: 8,
+        }}>
+          {
+            posts.map((p, i) => (
+              <Post
+                key={i}
+                id={p.id}
+                author={p.author}
+                message={p.message}
+                upvotes={p.upvotes}
+                downvotes={p.downvotes}
+              />
+            ))
+          }
+        </ScrollView>
+        <ChatInput 
+          style={{ flex: 2 }} 
+          onSend={this.onSend}
+        />
+      </View>
     )
   }
 
   renderError() {
-    const { fetchingGamesError } = this.props;
-    const message = `We encountered an error ${fetchingGamesError.message}`;
+    const { fetchingPostsError } = this.props;
+    const message = `We encountered an error ${fetchingPostsError.message}`;
     return (
       <View style={{
         ...commonViewStyle,
@@ -99,17 +113,17 @@ class MyGamesScreen extends React.Component {
 
   render() {
     const { 
-      fetchingGamesError,
-      isFetchingGames,
+      fetchingPostsError,
+      isFetchingPosts,
     } = this.props;
 
     let content;
-    if (isFetchingGames) {
+    if (isFetchingPosts) {
       content = this.renderLoadingContent();
-    } else if (fetchingGamesError) {
+    } else if (fetchingPostsError) {
       content = this.renderError();
     } else {
-      content = this.renderGames();
+      content = this.renderGame();
     }
 
     return (
@@ -120,4 +134,4 @@ class MyGamesScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyGamesScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(PlayGameScreen);
