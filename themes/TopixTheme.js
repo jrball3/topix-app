@@ -47,7 +47,8 @@ const Picker = {
 const Icon = {
   iconStyle: {
     color: Colors.foregroundColor,
-  }
+  },
+  underlayColor: Colors.backgroundColor,
 }
 
 const Button = {

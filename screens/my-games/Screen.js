@@ -4,7 +4,16 @@ import { bindActionCreators } from 'redux'
 import { ThemeProvider } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import { selectState } from './Helpers';
-import { ScrollView, View, ActivityIndicator, Text } from 'react-native';
+import { 
+  ScrollView,
+  View,
+  ActivityIndicator,
+  Text,
+  RefreshControl,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import { fetchGames } from './Actions';
 import { getSession } from '../../Helpers';
 import Layout from '../../constants/Layout';
@@ -25,8 +34,8 @@ const mapStateToProps = state => {
 
 const commonViewStyle = {
   backgroundColor: TopixTheme.backgroundColor,
-  paddingTop: 30,
-  paddingBottom: 30,
+  paddingTop: 10,
+  paddingBottom: 10,
 }
 
 class MyGamesScreen extends React.Component {
@@ -35,9 +44,14 @@ class MyGamesScreen extends React.Component {
     this.renderGames = this.renderGames.bind(this);
     this.renderError = this.renderError.bind(this);
     this.renderLoadingContent = this.renderLoadingContent.bind(this);
+    this.performFetch = this.performFetch.bind(this);
   }
   
   componentDidMount() {
+    this.performFetch();
+  }
+
+  performFetch() {
     this.props.fetchGames({
       authToken: this.props.session.authToken,
     })
@@ -50,12 +64,20 @@ class MyGamesScreen extends React.Component {
     } = this.props;
 
     return (
-      <ScrollView style={{
-        ...commonViewStyle,
-        height: Layout.window.height,
-        width: Layout.window.width,
-        paddingVertical: 8,
-      }}>
+      <ScrollView
+        style={{
+          ...commonViewStyle,
+        }}
+        contentContainerStyle={{
+          justifyContent: 'flex-end',
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.isFetchingGames}
+            onRefresh={this.performFetch}
+          />
+        }
+      >
         {games.map((l, i) => (
           <Game
             key={i}
@@ -101,10 +123,11 @@ class MyGamesScreen extends React.Component {
     const { 
       fetchingGamesError,
       isFetchingGames,
+      games,
     } = this.props;
 
     let content;
-    if (isFetchingGames) {
+    if (games.length === 0 && isFetchingGames) {
       content = this.renderLoadingContent();
     } else if (fetchingGamesError) {
       content = this.renderError();
@@ -113,9 +136,15 @@ class MyGamesScreen extends React.Component {
     }
 
     return (
-      <ThemeProvider theme={TopixTheme}>
-        {content}
-      </ThemeProvider>
+      <SafeAreaView style={{
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+      }}>
+        <ThemeProvider theme={TopixTheme}>
+          {content}
+        </ThemeProvider>
+      </SafeAreaView>
     );
   }
 }

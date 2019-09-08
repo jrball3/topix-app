@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableHighlight } from 'react-native';
+import { View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import TopixTheme from '../themes/TopixTheme';
 

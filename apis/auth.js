@@ -1,7 +1,7 @@
 import axios from 'axios';
 import urljoin from 'url-join';
+import { BACKEND_ROOT_URL } from '../Constants';
 
-const BACKEND_ROOT_URL = "http://35.236.219.61/topix-api/"
 const AUTH_API_URL = urljoin(BACKEND_ROOT_URL, 'api/v1/auth')
 
 class AuthAPI {

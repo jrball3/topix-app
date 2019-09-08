@@ -1,19 +1,27 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { ThemeProvider } from 'react-native-elements';
+import { ThemeProvider, } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import { selectState } from './Helpers';
-import { ScrollView, View, ActivityIndicator, Text, FlatList } from 'react-native';
-import { fetchPosts } from './Actions';
+import { 
+  ScrollView, 
+  KeyboardAvoidingView,
+  View, 
+  ActivityIndicator, 
+  Text,
+  SafeAreaView,
+} from 'react-native';
+import { fetchPosts, createPost } from './Actions';
 import { getSession } from '../../Helpers';
 import Post from '../../components/Post';
 import ChatInput from '../../components/ChatInput';
-import Layout from '../../constants/Layout';
+import { Header } from 'react-navigation';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     fetchPosts,
+    createPost,
   }, dispatch)
 };
 
@@ -37,49 +45,72 @@ class PlayGameScreen extends React.Component {
     this.renderError = this.renderError.bind(this);
     this.renderLoadingContent = this.renderLoadingContent.bind(this);
     this.onSend = this.onSend.bind(this);
+    this.performFetch = this.performFetch.bind(this);
   }
   
   componentDidMount() {
+    this.performFetch();
+  }
+
+  performFetch() {
     this.props.fetchPosts({
       authToken: this.props.session.authToken,
       gameId: this.props.navigation.state.params.gameId,
     })
   }
 
-  onSend(post) {
-    console.log('Sending ' + JSON.stringify(post))
+  onSend(message) {
+    this.props.createPost({
+      authToken: this.props.session.authToken,
+      gameId: this.props.navigation.state.params.gameId,
+      message,
+    })
   }
 
   renderGame() {
     const { posts } = this.props;
     return (
-      <View style={{
-        ...commonViewStyle,
-        height: Layout.window.height,
-        width: Layout.window.width,
-        flex: 10,
-      }}>
-        <ScrollView style={{
-          flex: 8,
-        }}>
-          {
-            posts.map((p, i) => (
-              <Post
-                key={i}
-                id={p.id}
-                author={p.author}
-                message={p.message}
-                upvotes={p.upvotes}
-                downvotes={p.downvotes}
-              />
-            ))
-          }
-        </ScrollView>
-        <ChatInput 
-          style={{ flex: 2 }} 
-          onSend={this.onSend}
-        />
-      </View>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset = {Header.HEIGHT + 20}
+        style={{
+          ...commonViewStyle,
+          flex: 1,
+          justifyContent: 'flex-end',
+        }}
+        behavior="padding"
+        enabled
+      >
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}
+        >
+          <ScrollView
+            ref={ref => this.scrollView = ref}
+            onContentSizeChange={(contentWidth, contentHeight)=>{        
+                this.scrollView.scrollToEnd({animated: true});
+            }}
+          >
+            {
+              posts.map((p, i) => (
+                <Post
+                  key={i}
+                  id={p.id}
+                  author={p.author}
+                  message={p.message}
+                  upvotes={p.upvotes}
+                  downvotes={p.downvotes}
+                />
+              ))
+            }
+          </ScrollView>
+          <ChatInput 
+            style={{ flex: 2 }}
+            onSend={this.onSend}
+          />
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   }
 
