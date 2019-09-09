@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { ThemeProvider, } from 'react-native-elements';
+import { ThemeProvider, Icon } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import { selectState } from './Helpers';
 import { 
@@ -12,16 +12,18 @@ import {
   Text,
   SafeAreaView,
 } from 'react-native';
-import { fetchPosts, createPost } from './Actions';
+import { fetchPosts, createPost, fetchScores } from './Actions';
 import { getSession } from '../../Helpers';
 import Post from '../../components/Post';
 import ChatInput from '../../components/ChatInput';
 import { Header } from 'react-navigation';
+import PlayGameHeader from './Header';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     fetchPosts,
     createPost,
+    fetchScores,
   }, dispatch)
 };
 
@@ -39,6 +41,10 @@ const commonViewStyle = {
 }
 
 class PlayGameScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: <PlayGameHeader navigation={navigation} /> 
+  });
+
   constructor(props) {
     super(props);
     this.renderGame = this.renderGame.bind(this);
@@ -53,16 +59,22 @@ class PlayGameScreen extends React.Component {
   }
 
   performFetch() {
+    const { game } = this.props;
     this.props.fetchPosts({
       authToken: this.props.session.authToken,
-      gameId: this.props.navigation.state.params.gameId,
+      gameId: game.id,
+    })
+    this.props.fetchScores({
+      authToken: this.props.session.authToken,
+      gameId: game.id,
     })
   }
 
   onSend(message) {
+    const { game } = this.props;
     this.props.createPost({
       authToken: this.props.session.authToken,
-      gameId: this.props.navigation.state.params.gameId,
+      gameId: game.id,
       message,
     })
   }
@@ -121,6 +133,7 @@ class PlayGameScreen extends React.Component {
       <View style={{
         ...commonViewStyle,
         alignItems: 'center',
+        flex: 1,
       }}>
         <Text>{message}</Text>
       </View>
@@ -132,6 +145,7 @@ class PlayGameScreen extends React.Component {
       <View style={{
         ...commonViewStyle,
         alignItems: 'center',
+        flex: 1,
       }}>
         <ActivityIndicator 
           size="large" 

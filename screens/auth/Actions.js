@@ -13,6 +13,7 @@ export const updateField = ({ field, value }) =>
 export const CHECK_SESSION_REQUEST = 'CHECK_SESSION_REQUEST';
 export const CHECK_SESSION_SUCCESS = 'CHECK_SESSION_SUCCESS';
 export const CHECK_SESSION_FAILURE = 'CHECK_SESSION_FAILURE';
+
 export const checkSession = ({ navigation, authToken }) => async dispatch => {
   await dispatch({ 
     type: CHECK_SESSION_REQUEST,
@@ -28,9 +29,15 @@ export const checkSession = ({ navigation, authToken }) => async dispatch => {
       data,
       valid: true,
     });
-    return navigation.dispatch(
-      NavigationActions.navigate({ routeName: "My Games" })
-    );
+    
+    const session = {
+      user: data.user,
+      authToken,
+    }
+
+    await dispatch(setSession({ session }));
+    navigation.navigate("My Games")
+
   } catch (error) {
     const { response, message } = error;
     const status = response && response.status;
@@ -57,6 +64,7 @@ export const checkSession = ({ navigation, authToken }) => async dispatch => {
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_REQUEST_SUCCESS = 'LOGIN_REQUEST_SUCCESS';
 export const LOGIN_REQUEST_FAILURE = 'LOGIN_REQUEST_FAILURE';
+
 export const login = ({ navigation, username, password }) => async dispatch => {
   await dispatch({
     type: LOGIN_REQUEST,
@@ -67,7 +75,7 @@ export const login = ({ navigation, username, password }) => async dispatch => {
   try {
     const loginResponse = await AuthAPI.auth({ username, password })
     const { status, data } = loginResponse;
-    const { token: authToken } = data;
+    const { token: authToken, user } = data;
 
     await dispatch({
       type: LOGIN_REQUEST_SUCCESS,
@@ -77,15 +85,13 @@ export const login = ({ navigation, username, password }) => async dispatch => {
     })
 
     const session = {
-      username,
+      user,
       authToken,
     }
   
     await dispatch(setSession({ session }));
-
-    return navigation.dispatch(
-      NavigationActions.navigate({ routeName: "My Games" })
-    );
+    navigation.navigate("My Games")
+    
   } catch (error) {
     const { response, message } = error;
     const status = response && response.status;

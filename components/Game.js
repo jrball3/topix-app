@@ -5,20 +5,18 @@ import TouchableScale from 'react-native-touchable-scale';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Game = ({
-  navigation,
-  gameName,
-  gameType,
-  gameId,
+  game,
+  onSelect,
 }) => (
   <ListItem
     Component={TouchableScale}
     friction={90}
     tension={100}
     activeScale={0.95}
-    title={gameName}
+    title={game.name}
     titleStyle={{ color: TopixTheme.foregroundColor, fontWeight: 'bold' }}
     subtitleStyle={{ color: TopixTheme.foregroundColor }}
-    subtitle={gameType}
+    subtitle={game.type}
     chevronColor={TopixTheme.foregroundColor}
     chevron
     containerStyle={{
@@ -26,7 +24,7 @@ const Game = ({
       marginVertical: 8,
       borderRadius: 8,
     }}
-    onPress={() => navigation.navigate("Play Game", { gameId })}
+    onPress={() => onSelect(game)}
   />
 )
 

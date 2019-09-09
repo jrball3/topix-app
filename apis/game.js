@@ -2,6 +2,7 @@ import axios from 'axios';
 import urljoin from 'url-join';
 import { getAxiosConfig } from './helpers';
 import { BACKEND_ROOT_URL } from '../Constants';
+import qs from 'query-string';
 
 const GAME_API_URL = urljoin(BACKEND_ROOT_URL, 'api/v1/game')
 

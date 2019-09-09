@@ -15,13 +15,14 @@ import {
   StatusBar,
 } from 'react-native';
 import { fetchGames } from './Actions';
+import { selectGame } from '../play-game/Actions';
 import { getSession } from '../../Helpers';
-import Layout from '../../constants/Layout';
 import Game from '../../components/Game';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     fetchGames,
+    selectGame,
   }, dispatch)
 };
 
@@ -45,6 +46,7 @@ class MyGamesScreen extends React.Component {
     this.renderError = this.renderError.bind(this);
     this.renderLoadingContent = this.renderLoadingContent.bind(this);
     this.performFetch = this.performFetch.bind(this);
+    this.handleSelectGame = this.handleSelectGame.bind(this);
   }
   
   componentDidMount() {
@@ -55,6 +57,13 @@ class MyGamesScreen extends React.Component {
     this.props.fetchGames({
       authToken: this.props.session.authToken,
     })
+  }
+
+  handleSelectGame(game) {
+    this.props.selectGame({ 
+      game, 
+      navigation: this.props.navigation,
+    });
   }
 
   renderGames() {
@@ -78,13 +87,12 @@ class MyGamesScreen extends React.Component {
           />
         }
       >
-        {games.map((l, i) => (
+        {games.map((g, i) => (
           <Game
             key={i}
             navigation={navigation}
-            gameName={l.name}
-            gameType={l.type}
-            gameId={l.id}
+            game={g}
+            onSelect={this.handleSelectGame}
           />
         ))}
       </ScrollView>
@@ -98,6 +106,7 @@ class MyGamesScreen extends React.Component {
       <View style={{
         ...commonViewStyle,
         alignItems: 'center',
+        flex: 1,
       }}>
         <Text>{message}</Text>
       </View>
@@ -109,6 +118,8 @@ class MyGamesScreen extends React.Component {
       <View style={{
         ...commonViewStyle,
         alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
       }}>
         <ActivityIndicator 
           size="large" 

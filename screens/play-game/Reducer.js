@@ -1,60 +1,42 @@
 import {
+  SELECT_GAME,
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_FAILURE,
   FETCH_POSTS_SUCCESS,
   CREATE_POST_FAILURE,
   CREATE_POST_REQUEST,
   CREATE_POST_SUCCESS,
+  FETCH_SCORES_REQUEST,
+  FETCH_SCORES_FAILURE,
+  FETCH_SCORES_SUCCESS,
 } from './Actions';
 
 const initialState = {
   isFetchingPosts: false,
-  fetchingPostsFailure: false,
   fetchingPostsSuccess: false,
   fetchingPostsError: null,
+
   isCreatingPost: false,
   postCreationError: null,
-  posts: [
-    {
-      id: '12kj3bjkh123b5',
-      author: 'some guy',
-      message: 'a big post that definitely doesnt fit on one line wo this is so long',
-      upvotes: 0,
-      downvotes: 3,
-    },
-    {
-      id: '12kj3bjk5123b5',
-      author: 'another guy',
-      message: 'a small post',
-      upvotes: 3,
-      downvotes: 1,
-    },
-    {
-      id: '12kj3bjk5123b5',
-      author: 'other guy',
-      message: 'a medium post that will probs fit',
-      upvotes: 3,
-      downvotes: 1,
-    },
-    {
-      id: '12kj3bjk5153b5',
-      author: 'other guy',
-      message: 'a post that makes us have to scroll',
-      upvotes: 3,
-      downvotes: 1,
-    },
-    {
-      id: '12kj3bjk512ab5',
-      author: 'other guy',
-      message: 'a post that makes us have to scroll more',
-      upvotes: 3,
-      downvotes: 1,
-    }
-  ],
+  postCreationSuccess: null,
+
+  isFetchingScores: false,
+  fetchingScoresError: null,
+  fetchingScoresSuccess: null,
+
+  game: null,
+  posts: [],
+  scores: [],
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case SELECT_GAME:
+      return {
+        ...state,
+        game: action.game,
+      }
     
     case FETCH_POSTS_REQUEST:
       return {
@@ -67,7 +49,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingPosts: false,
         fetchingPostsSuccess: false,
-        fetchingPostsFailure: true,
         fetchingPostsError: action.error,
       }
 
@@ -76,7 +57,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingPosts: false,
         fetchingPostsSuccess: true,
-        fetchingPostsFailure: false,
         fetchingPostsError: null,
         posts: action.posts,
       }
@@ -98,11 +78,35 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         postCreationError: null,
+        postCreationSuccess: true,
         isCreatingPost: false,
         posts: [
           ...state.posts,
           action.post,
         ]
+      }
+
+    case FETCH_SCORES_REQUEST:
+      return {
+        ...state,
+        isFetchingScores: true,
+      }
+
+    case FETCH_SCORES_FAILURE:
+      return {
+        ...state,
+        isFetchingScores: false,
+        fetchingScoresError: action.error,
+        fetchingScoresSuccess: false,
+      }
+
+    case FETCH_SCORES_SUCCESS:
+      return {
+        ...state,
+        isFetchingScores: false,
+        fetchingScoresError: null,
+        fetchingScoresSuccess: true,
+        scores: action.scores,
       }
     
     default:

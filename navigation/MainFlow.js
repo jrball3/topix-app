@@ -12,9 +12,11 @@ const navigatorConfig  = {
       const { routeName } = navigation.state;
       let iconName;
       if (routeName === 'My Games') {
-        iconName = "logo-game-controller-a";
+        iconName = "gamepad";
+      } else if (routeName === 'Create Game') {
+        iconName = 'plus-circle';
       }
-      return <Icon type="ionicon" name={iconName} size={25} color={tintColor} />;
+      return <Icon type="font-awesome" name={iconName} size={25} color={tintColor} />;
     },
   }),
   tabBarOptions: {
@@ -37,12 +39,7 @@ BottomNav.navigationOptions = {
 
 const MainFlow = createStackNavigator({
   BottomNav,
-  "Play Game": {
-    screen: PlayGame,
-    navigationOptions: ({ navigation }) => ({
-      title: "Play Game",
-    }),
-  }
+  "Play Game": PlayGame,
 })
 
 export default MainFlow;

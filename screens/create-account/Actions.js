@@ -30,9 +30,7 @@ export const createAccount = ({
       email, 
       data,
     })
-    return navigation.dispatch(
-      NavigationActions.navigate({ routeName: "Auth" })
-    );
+    navigation.navigate("Auth")
   }
   catch (error) {
     const { response, message } = error;

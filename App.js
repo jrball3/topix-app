@@ -37,10 +37,10 @@ export default function App(props) {
   } else {
     const App = createAppContainer(AppFlow);
     ret = (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <App />
-        </View>
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <App />
+      </View>
     );
   }
   
