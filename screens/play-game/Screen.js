@@ -111,8 +111,8 @@ class PlayGameScreen extends React.Component {
                   id={p.id}
                   author={p.author}
                   message={p.message}
-                  upvotes={p.upvotes}
-                  downvotes={p.downvotes}
+                  upvotes={p.upvotes.length}
+                  downvotes={p.downvotes.length}
                 />
               ))
             }

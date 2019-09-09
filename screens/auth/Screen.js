@@ -38,6 +38,8 @@ class AuthScreen extends React.Component {
     this.performChecks = this.performChecks.bind(this);
     this.renderLoginForm = this.renderLoginForm.bind(this);
     this.renderLoadingContent = this.renderLoadingContent.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   componentDidMount() {
@@ -74,8 +76,30 @@ class AuthScreen extends React.Component {
     )
   }
 
+  handleLogin() {
+    const { 
+      username,
+      password
+    } = this.props;
+
+    this.props.login({
+      username,
+      password
+    })
+  }
+
+  handleCreate() {
+    this.props.navigation.navigate("Create")
+  }
+
   renderLoginForm() {
-    return <LoginForm {...this.props} />
+    return (
+      <LoginForm
+        {...this.props} 
+        onLogin={this.handleLogin}
+        onPressCreate={this.handleCreate} 
+      />
+    )
   }
 
   render() {

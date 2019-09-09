@@ -66,22 +66,14 @@ const LoginForm = (props) => (
 
     <Button
       title="Log in"
-      onPress={() => {
-        props.login({
-          naviation: props.navigation,
-          username: props.username,
-          password: props.password,
-        })
-      }}
+      onPress={props.onLogin}
     />
 
     <View style={{ marginTop: 10, marginBelow: 10 }} />
 
     <Button
       title="Don't have an account? Tap here!"
-      onPress={() => {
-        props.navigation.navigate("Create")
-      }}
+      onPress={props.onPressCreate}
     />
   </View>
 );
