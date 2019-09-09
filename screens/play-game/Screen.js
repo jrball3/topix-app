@@ -12,7 +12,13 @@ import {
   Text,
   SafeAreaView,
 } from 'react-native';
-import { fetchPosts, createPost, fetchScores } from './Actions';
+import { 
+  fetchPosts,
+  createPost,
+  fetchScores,
+  upvotePost,
+  downvotePost,
+} from './Actions';
 import { getSession } from '../../Helpers';
 import Post from '../../components/Post';
 import ChatInput from '../../components/ChatInput';
@@ -24,6 +30,8 @@ const mapDispatchToProps = dispatch => {
     fetchPosts,
     createPost,
     fetchScores,
+    upvotePost,
+    downvotePost
   }, dispatch)
 };
 
@@ -52,6 +60,8 @@ class PlayGameScreen extends React.Component {
     this.renderLoadingContent = this.renderLoadingContent.bind(this);
     this.onSend = this.onSend.bind(this);
     this.performFetch = this.performFetch.bind(this);
+    this.handleUpvote = this.handleUpvote.bind(this);
+    this.handleDownvote = this.handleDownvote.bind(this);
   }
   
   componentDidMount() {
@@ -76,6 +86,20 @@ class PlayGameScreen extends React.Component {
       authToken: this.props.session.authToken,
       gameId: game.id,
       message,
+    })
+  }
+  
+  handleUpvote(post) {
+    this.props.upvotePost({ 
+      authToken: this.props.session.authToken,
+      postId: post.id 
+    })
+  }
+
+  handleDownvote(post) {
+    this.props.downvotePost({ 
+      authToken: this.props.session.authToken,
+      postId: post.id 
     })
   }
 
@@ -113,6 +137,8 @@ class PlayGameScreen extends React.Component {
                   message={p.message}
                   upvotes={p.upvotes.length}
                   downvotes={p.downvotes.length}
+                  onUpvote={() => this.handleUpvote(p)}
+                  onDownvote={() => this.handleDownvote(p)}
                 />
               ))
             }

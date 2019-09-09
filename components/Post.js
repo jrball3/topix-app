@@ -13,6 +13,8 @@ class Post extends React.PureComponent {
       message,
       upvotes,
       downvotes,
+      onUpvote,
+      onDownvote,
     } = this.props;
 
     return (
@@ -36,11 +38,27 @@ class Post extends React.PureComponent {
         {/* Voting / Bottom Row */}
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: 120 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Icon type='font-awesome' name='thumbs-up' color={TopixTheme.foregroundColor} />
+            <Icon 
+              type='font-awesome'
+              name='thumbs-up'
+              iconStyle={{
+                color: TopixTheme.foregroundColor,
+              }}
+              underlayColor="white"
+              onPress={onUpvote}
+            />
             <Text style={{ marginLeft: 5 }}>{upvotes}</Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5 }}>
-            <Icon type='font-awesome' name='thumbs-down' color={TopixTheme.foregroundColor} />
+            <Icon 
+              type='font-awesome'
+              name='thumbs-down'
+              iconStyle={{
+                color: TopixTheme.foregroundColor
+              }}
+              underlayColor="white"
+              onPress={onDownvote}
+            />
             <Text style={{ marginLeft: 5 }}>{downvotes}</Text>
           </View>
           <View>

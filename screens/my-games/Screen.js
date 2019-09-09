@@ -106,6 +106,7 @@ class MyGamesScreen extends React.Component {
       <View style={{
         ...commonViewStyle,
         alignItems: 'center',
+        justifyContent: 'center',
         flex: 1,
       }}>
         <Text>{message}</Text>

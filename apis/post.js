@@ -25,6 +25,20 @@ class PostAPI {
     )
   }
 
+  static upvotePost ({ authToken, postId }) {
+    return axios.post(
+      urljoin(POST_API_URL, postId, 'upvote'),
+      {}, getAxiosConfig(authToken),
+    )
+  }
+
+  static downvotePost ({ authToken, postId }) {
+    return axios.post(
+      urljoin(POST_API_URL, postId, 'downvote'),
+      {}, getAxiosConfig(authToken),
+    )
+  }
+
 }
 
 export default PostAPI;
