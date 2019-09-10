@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { ScrollView, Text, Picker } from 'react-native';
+import { View, ScrollView, Text, Picker } from 'react-native';
 import { Icon, Input, ThemeProvider, Button } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import Layout from '../../constants/Layout';
@@ -91,6 +91,9 @@ class CreateGameScreen extends React.Component {
       friends,
     } = this.props;
 
+    const buttonHeight = 15;
+    const scrollViewHeight = Layout.window.height - buttonHeight;
+
     return (
       <ThemeProvider theme={TopixTheme}>
         <SafeAreaView style={{ 
@@ -99,7 +102,7 @@ class CreateGameScreen extends React.Component {
         }}>
           <ScrollView 
             style={{ 
-              flex: 9
+              height: scrollViewHeight
             }} 
             contentContainerStyle={{
               justifyContent: 'center',
@@ -153,15 +156,19 @@ class CreateGameScreen extends React.Component {
               selectablePlayers={friends}
               onAddPlayer={this.props.addPlayer}
               onRemovePlayer={this.props.removePlayer}
+              nestedScrollEnabled={true}
             />
           </ScrollView>
 
-          <Button
-            style={{ flex: 1, marginTop: 5 }}
-            title="Create new game"
-            onPress={this.handleCreateGame}
-            disbled={players.length < 3}
-          />
+          <View style={{ height: buttonHeight, margin: 15 }}>
+            <Button
+              title="Create new game"
+              onPress={this.handleCreateGame}
+              disbled={players.length < 3}
+            />
+          </View>
+
+
         </SafeAreaView>
       </ThemeProvider>
     );

@@ -53,6 +53,7 @@ class PlayerSelector extends React.Component {
     const {
       selectedPlayers,
       selectablePlayers,
+      nestedScrollEnabled,
     } = this.props;
 
     return (
@@ -66,7 +67,9 @@ class PlayerSelector extends React.Component {
           <FlatList
             style={{ 
               width: Layout.window.width - 50,
+              height: 200,
             }}
+            nestedScrollEnabled={nestedScrollEnabled}
             keyExtractor={this.keyExtractor}
             data={selectablePlayers}
             renderItem={this.renderItem}
