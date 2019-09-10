@@ -57,10 +57,17 @@ const Button = {
   },
 }
 
+const Text = {
+  textStyle: {
+    color: "white",
+  }
+}
+
 export default {
   ...Colors,
   Icon,
   Input,
   Button,
   Picker,
+  Text,
 }

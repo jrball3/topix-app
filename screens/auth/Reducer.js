@@ -17,6 +17,7 @@ const initialState = {
   needLogin: true,
   loggingIn: false,
   loggedIn: false,
+  loginError: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +41,7 @@ const reducer = (state = initialState, action) => {
         checkingSession: false,
         sessionChecked: true,
         needLogin: true,
+        loginError: action.message,
       }
 
     case CHECK_SESSION_SUCCESS:
@@ -49,6 +51,7 @@ const reducer = (state = initialState, action) => {
         sessionChecked: true,
         needLogin: !action.valid,
         loggedIn: action.valid,
+        loginError: null,
       }
     
     case LOGIN_REQUEST:
@@ -62,6 +65,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loggingIn: false,
         loggedIn: false,
+        loginError: action.message,
       }
     
     case LOGIN_REQUEST_SUCCESS:

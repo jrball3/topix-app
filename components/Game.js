@@ -7,6 +7,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 const Game = ({
   game,
   onSelect,
+  containerStyle = {},
+  chevron = true,
+  chevronColor = TopixTheme.foregroundColor,
+  checkBox = null,
 }) => (
   <ListItem
     Component={TouchableScale}
@@ -16,13 +20,16 @@ const Game = ({
     title={game.name}
     titleStyle={{ color: TopixTheme.foregroundColor, fontWeight: 'bold' }}
     subtitleStyle={{ color: TopixTheme.foregroundColor }}
-    subtitle={game.type}
-    chevronColor={TopixTheme.foregroundColor}
-    chevron
+    // subtitle={game.type}
+    subtitle={`${game.players.length} Players`}
+    chevronColor={chevronColor}
+    chevron={chevron}
+    checkBox={checkBox}
     containerStyle={{
       marginHorizontal: 16,
       marginVertical: 8,
       borderRadius: 8,
+      ...containerStyle,
     }}
     onPress={() => onSelect(game)}
   />

@@ -1,19 +1,29 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { View, Text, Picker } from 'react-native';
+import { ScrollView, Text, Picker } from 'react-native';
 import { Icon, Input, ThemeProvider, Button } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import Layout from '../../constants/Layout';
-import { updateField, createGame } from './Actions';
+import { 
+  updateField,
+  createGame,
+  addPlayer,
+  removePlayer,
+  fetchFriends,
+} from './Actions';
 import { selectState } from './Helpers';
 import { getSession } from '../../Helpers';
-
+import PlayerSelector from '../../components/PlayerSelector';
+import { SafeAreaView } from 'react-navigation';
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     updateField,
     createGame,
+    addPlayer,
+    removePlayer,
+    fetchFriends,
   }, dispatch)
 };
 
@@ -31,69 +41,131 @@ const commonViewStyle = {
   paddingBottom: 30,
 }
 
-const CreateGameScreen = (props) => {
-  return (
-    <ThemeProvider theme={TopixTheme}>
-      <View style={{ 
-        ...commonViewStyle,
-        width: Layout.window.width,
-        height: Layout.window.height,
-      }}>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 30,
-            marginVertical: 10,
-            fontWeight: '300',
-          }}
-        >
-          Create a Game
-        </Text>
+class CreateGameScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleUpdateGameName = this.handleUpdateGameName.bind(this);
+    this.handleCreateGame = this.handleCreateGame.bind(this);
+  }
 
-        <Input
-          leftIcon={
-            <Icon
-              name="user"
-              type="simple-line-icon"
-              color="rgba(110, 120, 170, 1)"
-              size={25}
+  componentDidMount() {
+    const { session } = this.props;
+    const { authToken } = session;
+    this.props.fetchFriends({ authToken });
+  }
+
+  handleUpdateGameName(name) {
+    this.props.updateField({
+      field: 'gameName',
+      value: name,
+    })
+  }
+
+  handleCreateGame() {
+    const {
+      navigation,
+      gameName,
+      gameType,
+      players,
+      session,
+      createGame,
+    } = this.props;
+
+    const { 
+      authToken,
+    } = session;
+
+    createGame({ 
+      navigation,
+      authToken,
+      gameName,
+      gameType,
+      players,
+    });
+  }
+  
+  render() {
+    const {
+      gameName,
+      players,
+      friends,
+    } = this.props;
+
+    return (
+      <ThemeProvider theme={TopixTheme}>
+        <SafeAreaView style={{ 
+          ...commonViewStyle,
+          flex: 1,
+        }}>
+          <ScrollView 
+            style={{ 
+              flex: 9
+            }} 
+            contentContainerStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          > 
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 30,
+                marginVertical: 10,
+                fontWeight: '300',
+              }}
+            >
+              Create a Game
+            </Text>
+
+            <Input
+              leftIcon={
+                <Icon
+                  name="user"
+                  type="simple-line-icon"
+                  color="rgba(110, 120, 170, 1)"
+                  size={25}
+                />
+              }
+              placeholder="Game Name"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              returnKeyType="next"
+              ref={input => (this.gameNameInput = input)}
+              value={gameName}
+              onSubmitEditing={() => {
+                this.typePicker.focus();
+              }}
+              onChangeText={text => this.handleUpdateGameName(text)}
             />
-          }
-          placeholder="Game Name"
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-          returnKeyType="next"
-          ref={input => (this.gameName = input)}
-          value={props.gameName}
-          onSubmitEditing={() => {
-            this.typePicker.focus();
-          }}
-          onChangeText={text => props.updateField({field: 'gameName', value: text})}
-        />
 
-        <Picker
-          selectedValue={props.gameType}
-          ref={picker => (this.typePicker = picker)}
-          style={{height: 50, width: 200}}
-          onValueChange={itemValue => props.updateField({field: 'gameType', value: itemValue})}>
-          <Picker.Item label="Karma Hole" value="KARMA_HOLE" />
-        </Picker>
+            {/* <Picker
+              selectedValue={props.gameType}
+              ref={picker => (this.typePicker = picker)}
+              style={{height: 50, width: 200}}
+              onValueChange={itemValue => props.updateField({field: 'gameType', value: itemValue})}>
+              <Picker.Item label="Karma Hole" value="KARMA_HOLE" />
+            </Picker> */}
 
-        <Button
-          title="Create new game"
-          onPress={() => props.createGame({ 
-            navigation: props.navigation,
-            authToken: props.session.authToken,
-            gameName: props.gameName,
-            gameType: props.gameType,
-            players: props.players,
-          })}
-        />
+            <PlayerSelector 
+              gameName={gameName}
+              selectedPlayers={players}
+              selectablePlayers={friends}
+              onAddPlayer={this.props.addPlayer}
+              onRemovePlayer={this.props.removePlayer}
+            />
+          </ScrollView>
 
-      </View>
-    </ThemeProvider>
-  );
+          <Button
+            style={{ flex: 1, marginTop: 5 }}
+            title="Create new game"
+            onPress={this.handleCreateGame}
+            disbled={players.length < 3}
+          />
+        </SafeAreaView>
+      </ThemeProvider>
+    );
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateGameScreen);
