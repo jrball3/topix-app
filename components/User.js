@@ -10,10 +10,11 @@ const User = ({
   chevronColor = TopixTheme.foregroundColor,
   underlayColor = TopixTheme.backgroundColor,
   checkBox = null,
+  ...props
 }) => (
   <ListItem
     title={user.username}
-    titleStyle={{ 
+    titleStyle={{
       color: TopixTheme.foregroundColor,
       fontWeight: 'bold'
     }}
@@ -26,6 +27,7 @@ const User = ({
     }}
     underlayColor={underlayColor}
     onPress={onPress ? (() => onPress(user)) : null}
+    {...props}
   />
 )
 

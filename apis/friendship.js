@@ -6,7 +6,7 @@ import qs from 'query-string';
 
 const FRIENDS_API_URL = urljoin(BACKEND_ROOT_URL, 'api/v1/friendship')
 
-class FriendsAPI {
+class FriendshipAPI {
   
   static fetchFriendships ({ authToken }) {
     return axios.get(
@@ -29,4 +29,4 @@ class FriendsAPI {
 
 }
 
-export default FriendsAPI;
+export default FriendshipAPI;

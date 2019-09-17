@@ -109,14 +109,6 @@ export const fetchScores = ({ authToken, gameId }) => async (dispatch) => {
   }
 }
 
-export const selectGame = ({ navigation, game }) => async dispatch => {
-  await dispatch({
-    type: SELECT_GAME,
-    game,
-  })
-  navigation.navigate("Play Game")
-}
-
 export const upvotePost = ({ authToken, postId }) => async dispatch => {
   await dispatch({ type: UPVOTE_POST_REQUEST, authToken, postId })
 

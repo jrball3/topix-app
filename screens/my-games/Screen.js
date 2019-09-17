@@ -15,7 +15,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { fetchGames } from './Actions';
-import { selectGame } from '../play-game/Actions';
+import { selectGame } from '../my-games/Actions';
 import { getSession } from '../../Helpers';
 import Game from '../../components/Game';
 

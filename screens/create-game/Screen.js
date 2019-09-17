@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { View, ScrollView, Text, Picker } from 'react-native';
+import { View, ScrollView, Text, Picker, Keyboard } from 'react-native';
 import { Icon, Input, ThemeProvider, Button } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import Layout from '../../constants/Layout';
@@ -10,8 +10,8 @@ import {
   createGame,
   addPlayer,
   removePlayer,
-  fetchFriends,
 } from './Actions';
+import { fetchFriends } from '../my-friends/Actions';
 import { selectState } from './Helpers';
 import { getSession } from '../../Helpers';
 import PlayerSelector from '../../components/PlayerSelector';
@@ -133,11 +133,12 @@ class CreateGameScreen extends React.Component {
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
-              returnKeyType="next"
+              returnKeyType="done"
               ref={input => (this.gameNameInput = input)}
               value={gameName}
               onSubmitEditing={() => {
-                this.typePicker.focus();
+                // this.typePicker.focus();
+                Keyboard.dismiss();
               }}
               onChangeText={text => this.handleUpdateGameName(text)}
             />
@@ -164,7 +165,7 @@ class CreateGameScreen extends React.Component {
             <Button
               title="Create new game"
               onPress={this.handleCreateGame}
-              disbled={players.length < 3}
+              disabled={players.length < 3}
             />
           </View>
 

@@ -5,6 +5,7 @@ import authReducer from './screens/auth/Reducer';
 import createGameReducer from './screens/create-game/Reducer';
 import myGamesReducer from './screens/my-games/Reducer';
 import playGameReducer from './screens/play-game/Reducer';
+import myFriendsReducer from './screens/my-friends/Reducer';
 
 const initialRoot = {
   session: {
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   createGame: createGameReducer,
   myGames: myGamesReducer,
   playGame: playGameReducer,
+  myFriends: myFriendsReducer,
 })
 
 export default rootReducer;

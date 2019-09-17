@@ -78,11 +78,13 @@ class AuthScreen extends React.Component {
 
   handleLogin() {
     const { 
+      navigation,
       username,
       password
     } = this.props;
 
     this.props.login({
+      navigation,
       username,
       password
     })
