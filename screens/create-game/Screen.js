@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { View, ScrollView, Text, Picker, Keyboard } from 'react-native';
+import { View, ScrollView, Text, Platform, Keyboard, StatusBar } from 'react-native';
 import { Icon, Input, ThemeProvider, Button } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
 import Layout from '../../constants/Layout';
@@ -91,24 +91,19 @@ class CreateGameScreen extends React.Component {
       friends,
     } = this.props;
 
-    const buttonHeight = 15;
-    const scrollViewHeight = Layout.window.height - buttonHeight;
+    const buttonHeight = null; //60;
+    const scrollViewHeight = null; //Layout.window.height - buttonHeight;
 
     return (
       <ThemeProvider theme={TopixTheme}>
         <SafeAreaView style={{ 
           ...commonViewStyle,
           flex: 1,
+          justifyContent: 'flex-end',
+          paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
         }}>
-          <ScrollView 
-            style={{ 
-              height: scrollViewHeight
-            }} 
-            contentContainerStyle={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          > 
+
+          <View style={{ flex: 1 }}>
             <Text
               style={{
                 color: 'white',
@@ -119,7 +114,15 @@ class CreateGameScreen extends React.Component {
             >
               Create a Game
             </Text>
+          </View>
 
+          <View 
+            style={{ flex: 1 }} 
+            contentContainerStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          > 
             <Input
               leftIcon={
                 <Icon
@@ -142,15 +145,17 @@ class CreateGameScreen extends React.Component {
               }}
               onChangeText={text => this.handleUpdateGameName(text)}
             />
+          </View>
 
-            {/* <Picker
-              selectedValue={props.gameType}
-              ref={picker => (this.typePicker = picker)}
-              style={{height: 50, width: 200}}
-              onValueChange={itemValue => props.updateField({field: 'gameType', value: itemValue})}>
-              <Picker.Item label="Karma Hole" value="KARMA_HOLE" />
-            </Picker> */}
+          {/* <Picker
+            selectedValue={props.gameType}
+            ref={picker => (this.typePicker = picker)}
+            style={{height: 50, width: 200}}
+            onValueChange={itemValue => props.updateField({field: 'gameType', value: itemValue})}>
+            <Picker.Item label="Karma Hole" value="KARMA_HOLE" />
+          </Picker> */}
 
+          <View style={{ flex: 5, marginTop: 10 }}>
             <PlayerSelector 
               gameName={gameName}
               selectedPlayers={players}
@@ -159,17 +164,20 @@ class CreateGameScreen extends React.Component {
               onRemovePlayer={this.props.removePlayer}
               nestedScrollEnabled={true}
             />
-          </ScrollView>
+          </View>
 
-          <View style={{ height: buttonHeight, margin: 15 }}>
+          <View style={{ 
+            flex: 1,
+            marginTop: 10,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
             <Button
               title="Create new game"
               onPress={this.handleCreateGame}
               disabled={players.length < 3}
             />
           </View>
-
-
         </SafeAreaView>
       </ThemeProvider>
     );

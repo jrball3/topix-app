@@ -10,10 +10,10 @@ import {
   ActivityIndicator,
   Text,
   RefreshControl,
-  SafeAreaView,
   Platform,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { fetchGames } from './Actions';
 import { selectGame } from '../my-games/Actions';
 import { getSession } from '../../Helpers';
@@ -74,9 +74,6 @@ class MyGamesScreen extends React.Component {
 
     return (
       <ScrollView
-        style={{
-          ...commonViewStyle,
-        }}
         contentContainerStyle={{
           justifyContent: 'flex-end',
         }}
@@ -104,7 +101,6 @@ class MyGamesScreen extends React.Component {
     const message = `We encountered an error ${fetchingGamesError.message}`;
     return (
       <View style={{
-        ...commonViewStyle,
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
@@ -117,7 +113,6 @@ class MyGamesScreen extends React.Component {
   renderLoadingContent() {
     return (
       <View style={{
-        ...commonViewStyle,
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
@@ -147,16 +142,18 @@ class MyGamesScreen extends React.Component {
       content = this.renderGames();
     }
 
+    
     return (
-      <SafeAreaView style={{
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
-      }}>
-        <ThemeProvider theme={TopixTheme}>
-          {content}
-        </ThemeProvider>
-      </SafeAreaView>
+      <ThemeProvider theme={TopixTheme}>
+        <SafeAreaView style={{
+          ...commonViewStyle,
+          flex: 1,
+          justifyContent: 'flex-end',
+          paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        }}>
+            {content}
+        </SafeAreaView>
+      </ThemeProvider>
     );
   }
 }

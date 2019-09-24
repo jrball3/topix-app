@@ -109,7 +109,6 @@ class PlayGameScreen extends React.Component {
       <KeyboardAvoidingView
         keyboardVerticalOffset = {Header.HEIGHT + 20}
         style={{
-          ...commonViewStyle,
           flex: 1,
           justifyContent: 'flex-end',
         }}
@@ -157,7 +156,6 @@ class PlayGameScreen extends React.Component {
     const message = `We encountered an error ${fetchingPostsError.message}`;
     return (
       <View style={{
-        ...commonViewStyle,
         alignItems: 'center',
         flex: 1,
       }}>
@@ -169,7 +167,6 @@ class PlayGameScreen extends React.Component {
   renderLoadingContent() {
     return (
       <View style={{
-        ...commonViewStyle,
         alignItems: 'center',
         flex: 1,
       }}>
@@ -199,7 +196,14 @@ class PlayGameScreen extends React.Component {
 
     return (
       <ThemeProvider theme={TopixTheme}>
-        {content}
+        <SafeAreaView style={{
+          ...commonViewStyle,
+          flex: 1,
+          justifyContent: 'flex-end',
+          paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        }}>
+          {content}
+        </SafeAreaView>
       </ThemeProvider>
     );
   }

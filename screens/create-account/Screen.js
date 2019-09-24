@@ -7,7 +7,7 @@ import TopixTheme from '../../themes/TopixTheme';
 import Layout from '../../constants/Layout';
 import { updateField, createAccount } from './Actions';
 import { selectState } from './Helpers';
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions, SafeAreaView } from 'react-navigation'
 
 
 const mapDispatchToProps = dispatch => {
@@ -33,10 +33,11 @@ const commonViewStyle = {
 const CreateAccountScreen = (props) => {
   return (
     <ThemeProvider theme={TopixTheme}>
-      <View style={{ 
+      <SafeAreaView style={{
         ...commonViewStyle,
-        width: Layout.window.width,
-        height: Layout.window.height,
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
       }}>
         <Text
           style={{
@@ -144,7 +145,7 @@ const CreateAccountScreen = (props) => {
           })}
         />
 
-      </View>
+      </SafeAreaView>
     </ThemeProvider>
   );
 }

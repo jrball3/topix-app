@@ -8,7 +8,6 @@ import {
   View,
   ActivityIndicator,
   RefreshControl,
-  SafeAreaView,
   Platform,
   StatusBar,
 } from 'react-native';
@@ -17,6 +16,7 @@ import {
   Button,
   Text,
 } from 'react-native-elements';
+import { SafeAreaView } from 'react-navigation';
 import { fetchFriends } from './Actions';
 import { getSession } from '../../Helpers';
 import User from '../../components/User';
@@ -202,15 +202,16 @@ class MyFriendsScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView style={{
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
-      }}>
-        <ThemeProvider theme={TopixTheme}>
-          {content}
-        </ThemeProvider>
-      </SafeAreaView>
+      <ThemeProvider theme={TopixTheme}>
+        <SafeAreaView style={{
+          ...commonViewStyle,
+          flex: 1,
+          justifyContent: 'flex-end',
+          paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        }}>
+            {content}
+        </SafeAreaView>
+      </ThemeProvider>
     );
   }
 }

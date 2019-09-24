@@ -10,7 +10,7 @@ const PlayerTicker = ({ players }) => (
     ref={ref => this.scrollView = ref}
     contentContainerStyle={{
       padding: 5,
-      height: 50,
+      height: 80,
     }}
     onContentSizeChange={(contentWidth, contentHeight)=>{        
         this.scrollView.scrollToEnd({animated: true});
@@ -23,7 +23,7 @@ const PlayerTicker = ({ players }) => (
           user={p} 
           containerStyle={{
             marginHorizontal: 4,
-            height: 40,
+            height: 50,
             alignItems: 'center',
             justifyContent: 'center',
           }}
