@@ -15,16 +15,31 @@ class FriendshipAPI {
     )
   }
 
-  static sendFriendRequest ({ authtoken, user }) {
-
+  static sendFriendRequest ({ authToken, username }) {
+    const data = { username };
+    return axios.post(
+      FRIENDS_API_URL,
+      ...data,
+      getAxiosConfig(authToken)
+    )
   }
 
   static acceptFriendship ({ authToken, friendshipId }) {
-    
+    const acceptUrl = urljoin(FRIENDS_API_URL, friendshipId, 'accept');
+    return axios.post(
+      acceptUrl,
+      {},
+      getAxiosConfig(authToken)
+    )
   }
 
   static rejectFriendship ({ authToken, friendshipId }) {
-
+    const acceptUrl = urljoin(FRIENDS_API_URL, friendshipId, 'reject');
+    return axios.post(
+      acceptUrl,
+      {},
+      getAxiosConfig(authToken)
+    )
   }
 
 }

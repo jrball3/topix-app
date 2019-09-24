@@ -1,4 +1,5 @@
 import GameAPI from '../../apis/game';
+import { SELECT_GAME } from '../play-game/Actions';
 
 export const FETCH_GAMES_REQUEST = 'FETCH_GAMES_REQUEST'
 export const FETCH_GAMES_FAILURE = 'FETCH_GAMES_FAILURE'

@@ -6,7 +6,6 @@ import {
 
 const initialState = {
   isFetchingGames: false,
-  fetchingGamesFailure: false,
   fetchingGamesSuccess: false,
   fetchingGamesError: null,
   games: [],
@@ -19,6 +18,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingGames: true,
+        fetchingGamesError: null,
       }
     
     case FETCH_GAMES_FAILURE:
@@ -26,8 +26,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingGames: false,
         fetchingGamesSuccess: false,
-        fetchingGamesFailure: true,
-        fetchingGamesError: action.error,
+        fetchingGamesError: action.message,
       }
 
     case FETCH_GAMES_SUCCESS:
@@ -35,8 +34,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingGames: false,
         fetchingGamesSuccess: true,
-        fetchingGamesFailure: false,
-        fetchingGamesError: null,
         games: action.games,
       }
     

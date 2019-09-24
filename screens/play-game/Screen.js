@@ -10,8 +10,10 @@ import {
   View, 
   ActivityIndicator, 
   Text,
-  SafeAreaView,
+  Platform,
+  StatusBar,
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation'
 import { 
   fetchPosts,
   createPost,
@@ -115,38 +117,31 @@ class PlayGameScreen extends React.Component {
         behavior="padding"
         enabled
       >
-        <SafeAreaView
-          style={{
-            flex: 1,
-            justifyContent: 'flex-end',
+        <ScrollView
+          ref={ref => this.scrollView = ref}
+          onContentSizeChange={(contentWidth, contentHeight)=>{        
+              this.scrollView.scrollToEnd({animated: true});
           }}
         >
-          <ScrollView
-            ref={ref => this.scrollView = ref}
-            onContentSizeChange={(contentWidth, contentHeight)=>{        
-                this.scrollView.scrollToEnd({animated: true});
-            }}
-          >
-            {
-              posts.map((p, i) => (
-                <Post
-                  key={i}
-                  id={p.id}
-                  author={p.author}
-                  message={p.message}
-                  upvotes={p.upvotes.length}
-                  downvotes={p.downvotes.length}
-                  onUpvote={() => this.handleUpvote(p)}
-                  onDownvote={() => this.handleDownvote(p)}
-                />
-              ))
-            }
-          </ScrollView>
-          <ChatInput 
-            style={{ flex: 2 }}
-            onSend={this.onSend}
-          />
-        </SafeAreaView>
+          {
+            posts.map((p, i) => (
+              <Post
+                key={i}
+                id={p.id}
+                author={p.author}
+                message={p.message}
+                upvotes={p.upvotes.length}
+                downvotes={p.downvotes.length}
+                onUpvote={() => this.handleUpvote(p)}
+                onDownvote={() => this.handleDownvote(p)}
+              />
+            ))
+          }
+        </ScrollView>
+        <ChatInput 
+          style={{ flex: 2 }}
+          onSend={this.onSend}
+        />
       </KeyboardAvoidingView>
     )
   }

@@ -47,8 +47,9 @@ class PlayGameHeader extends React.Component {
       <ThemeProvider theme={TopixTheme}>
         <View
           style={{
-            height: Header.HEIGHT,
-            marginTop: Platform.OS === 'android' ? 24 : 20,
+            height: Header.HEIGHT + (Platform.OS === 'android' ? 0 : 24),
+            marginTop: Platform.OS === 'android' ? 24 : 0,
+            paddingTop: Platform.OS === 'ios' ? 48 : 0,
             flexDirection: 'row',
             alignItems: 'center',
             backgroundColor: TopixTheme.foregroundColor,

@@ -28,6 +28,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isCreatingAccount: true,
+        createAccountError: null,
       }
 
     case CREATE_ACCOUNT_FAILURE:
@@ -42,7 +43,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isCreatingAccount: false,
-        createAccountError: null,
         createAccountSuccess: true,
       }
 

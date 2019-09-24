@@ -4,6 +4,18 @@ export const FETCH_FRIENDS_REQUEST = 'FETCH_FRIENDS_REQUEST'
 export const FETCH_FRIENDS_FAILURE = 'FETCH_FRIENDS_FAILURE'
 export const FETCH_FRIENDS_SUCCESS = 'FETCH_FRIENDS_SUCCESS'
 
+export const SEND_FR_REQUEST = 'SEND_FR_REQUEST'
+export const SEND_FR_FAILURE = 'SEND_FR_FAILURE'
+export const SEND_FR_SUCCESS = 'SEND_FR_SUCCESS'
+
+export const ACCEPT_FR_REQUEST = 'ACCEPT_FR_REQUEST'
+export const ACCEPT_FR_FAILURE = 'ACCEPT_FR_FAILURE'
+export const ACCEPT_FR_SUCCESS = 'ACCEPT_FR_SUCCESS'
+
+export const REJECT_FR_REQUEST = 'REJECT_FR_REQUEST'
+export const REJECT_FR_FAILURE = 'REJECT_FR_FAILURE'
+export const REJECT_FR_SUCCESS = 'REJECT_FR_SUCCESS'
+
 export const fetchFriends = ({ authToken }) => async (dispatch) => {
   await dispatch({ type: FETCH_FRIENDS_REQUEST, authToken })
 
@@ -11,7 +23,8 @@ export const fetchFriends = ({ authToken }) => async (dispatch) => {
     const response = await FriendshipAPI.fetchFriendships({ authToken })
     const { status, data } = response;
     const { friendships } = data;
-    const accepted = friendships.filter(f => f.status == 'accepted');
+    // const accepted = friendships.filter(f => f.status === 'accepted');
+    // const friendRequests = friendships.filter(f => f.status === 'pending')
     // const friends = accepted.map(a => a.friend);
 
     const friends = [
@@ -59,13 +72,85 @@ export const fetchFriends = ({ authToken }) => async (dispatch) => {
       },
     ]
 
-    await dispatch({ type: FETCH_FRIENDS_SUCCESS, status, friends })
+    const friendRequests = [
+      {
+        status: 'pending',
+        added: Date.now(),
+        friend: {
+          "createdAt": "2019-09-10T03:06:06.826Z",
+          "email": "wannabefriend@verizon.net",
+          "id": "5d77131e2acfd4063b53fa9c",
+          "updatedAt": "2019-09-10T03:06:06.826Z",
+          "username": "wannabefriend",
+        }
+      }
+    ]
+    
+
+    await dispatch({ type: FETCH_FRIENDS_SUCCESS, status, friends, friendRequests })
   } catch (error) {
     const { response, message } = error;
     const status = response && response.status;
     const data = response && response.data;
     await dispatch({
       type: FETCH_FRIENDS_FAILURE,
+      status,
+      data,
+      message,
+    })
+  }
+}
+
+export const sendFriendRequest = ({ authToken, username }) => async (dispatch) => {
+  await dispatch({ type: SEND_FR_REQUEST, authToken, username })
+  try {
+    const response = await FriendshipAPI.sendFriendRequest({ authToken, username })
+    const { status } = response;
+    await dispatch({ type: SEND_FR_SUCCESS, status })
+  } catch (error) {
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    await dispatch({
+      type: SEND_FR_FAILURE,
+      status,
+      data,
+      message,
+    })
+  }
+}
+
+export const acceptFriendRequest = ({ authToken, friendshipId }) => async (dispatch) => {
+  await dispatch({ type: ACCEPT_FR_REQUEST, authToken, friendshipId })
+  try {
+    const response = await FriendshipAPI.acceptFriendship({ authToken, friendshipId })
+    const { status } = response;
+    await dispatch({ type: ACCEPT_FR_SUCCESS, status })
+  } catch (error) {
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    await dispatch({
+      type: ACCEPT_FR_FAILURE,
+      status,
+      data,
+      message,
+    })
+  }
+}
+
+export const rejectFriendRequest = ({ authToken, friendshipId }) => async (dispatch) => {
+  await dispatch({ type: REJECT_FR_REQUEST, authToken, friendshipId })
+  try {
+    const response = await FriendshipAPI.rejectFriendship({ authToken, friendshipId })
+    const { status } = response;
+    await dispatch({ type: REJECT_FR_SUCCESS, status })
+  } catch (error) {
+    const { response, message } = error;
+    const status = response && response.status;
+    const data = response && response.data;
+    await dispatch({
+      type: REJECT_FR_FAILURE,
       status,
       data,
       message,

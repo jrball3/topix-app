@@ -7,7 +7,6 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
-  RefreshControl,
   Platform,
   StatusBar,
 } from 'react-native';
@@ -17,9 +16,15 @@ import {
   Text,
 } from 'react-native-elements';
 import { SafeAreaView } from 'react-navigation';
-import { fetchFriends } from './Actions';
+import { 
+  fetchFriends,
+  sendFriendRequest,
+  acceptFriendRequest,
+  rejectFriendRequest,
+} from './Actions';
 import { getSession } from '../../Helpers';
 import User from '../../components/User';
+import FriendRequest from '../../components/FriendRequest';
 import Layout from '../../constants/Layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AddFriendModal from './AddFriendModal';
@@ -27,6 +32,9 @@ import AddFriendModal from './AddFriendModal';
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     fetchFriends,
+    sendFriendRequest,
+    acceptFriendRequest,
+    rejectFriendRequest,
   }, dispatch)
 };
 
@@ -52,6 +60,10 @@ class MyFriendsScreen extends React.Component {
     this.performFetch = this.performFetch.bind(this);
     this.handleSetAddFriendOpen = this.handleSetAddFriendOpen.bind(this);
     this.handleSendRequest = this.handleSendRequest.bind(this);
+    this.renderFriendsList = this.renderFriendsList.bind(this);
+    this.renderFriendRequests = this.renderFriendRequests.bind(this);
+    this.handleAcceptRequest = this.handleAcceptRequest.bind(this);
+    this.handleRejectRequest = this.handleRejectRequest.bind(this);
 
     this.state = {
       addFriendOpen: false,
@@ -73,13 +85,84 @@ class MyFriendsScreen extends React.Component {
   }
 
   handleSendRequest(username) {
-    console.log('Send friend request to ' + username)
     this.handleSetAddFriendOpen(false);
+    this.props.sendFriendRequest({
+      authToken: this.props.session.authToken,
+      username,
+    })
+  }
+
+  handleAcceptRequest(requestId) {
+    this.props.acceptFriendRequest({ 
+      authToken: this.props.session.authToken,
+      friendshipId: requestId,
+    })
+  }
+
+  handleRejectRequest(requestId) {
+    this.props.rejectFriendRequest({ 
+      authToken: this.props.session.authToken,
+      friendshipId: requestId,
+    })
+  }
+
+  renderFriendRequests() {
+    const { friendRequests } = this.props;
+    if (friendRequests.length === 0) return null;
+    return (
+      <ScrollView 
+        style={{
+          paddingHorizontal: 10,
+          width: Layout.window.width,
+        }}
+        contentContainerStyle={{
+          justifyContent: 'flex-start',
+        }}
+      >
+        {friendRequests.map((r, i) => (
+          <FriendRequest
+            key={i}
+            request={r}
+            containerStyle={{
+              marginVertical: 5,
+            }}
+            onPressAccept={() => this.handleAcceptRequest(r.friend.id)}
+            onPressReject={() => this.handleRejectRequest(r.friend.id)}
+          />
+        ))}
+      </ScrollView>
+    );
+  }
+
+  renderFriendsList() {
+    const { friends } = this.props;
+    return (
+      <ScrollView 
+        style={{
+          paddingHorizontal: 10,
+          width: Layout.window.width,
+        }}
+        contentContainerStyle={{
+          justifyContent: 'flex-start',
+        }}
+      >
+        {friends.map((g, i) => (
+          <User
+            key={i}
+            user={g}
+            containerStyle={{
+              marginVertical: 5,
+            }}
+          />
+        ))}
+      </ScrollView>
+    );
   }
 
   renderFriends() {
-    const { friends } = this.props;
     const { addFriendOpen } = this.state;
+    const friendRequests = this.renderFriendRequests();
+    const friendsList = this.renderFriendsList();
 
     return (
       <View
@@ -89,17 +172,11 @@ class MyFriendsScreen extends React.Component {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.props.isFetchingFriends}
-            onRefresh={this.performFetch}
-          />
-        }
       >
         <Text
           style={{
             color: 'white',
-            fontSize: 30,
+            fontSize: 25,
             marginVertical: 10,
             fontWeight: '300',
           }}
@@ -107,25 +184,14 @@ class MyFriendsScreen extends React.Component {
           My Friends
         </Text>
 
-        <ScrollView 
-          style={{
-            paddingHorizontal: 10,
-            width: Layout.window.width,
-          }}
-          contentContainerStyle={{
-            justifyContent: 'flex-start',
-          }}
-        >
-          {friends.map((g, i) => (
-            <User
-              key={i}
-              user={g}
-              containerStyle={{
-                marginVertical: 5,
-              }}
-            />
-          ))}
-        </ScrollView>
+        {friendRequests && 
+          <View style={{ flex: 2 }}>
+            {friendRequests}
+          </View>
+        }
+        <View style={{ flex: 5 }}>
+          {friendsList}
+        </View>
 
         <View style={{ marginVertical: 5 }}>
           <Button
@@ -209,7 +275,7 @@ class MyFriendsScreen extends React.Component {
           justifyContent: 'flex-end',
           paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
         }}>
-            {content}
+          {content}
         </SafeAreaView>
       </ThemeProvider>
     );

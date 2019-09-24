@@ -2,14 +2,32 @@ import {
   FETCH_FRIENDS_REQUEST,
   FETCH_FRIENDS_FAILURE,
   FETCH_FRIENDS_SUCCESS,
+  SEND_FR_REQUEST,
+  SEND_FR_FAILURE,
+  SEND_FR_SUCCESS,
+  ACCEPT_FR_FAILURE,
+  ACCEPT_FR_REQUEST,
+  ACCEPT_FR_SUCCESS,
+  REJECT_FR_FAILURE,
+  REJECT_FR_REQUEST,
+  REJECT_FR_SUCCESS,
 } from './Actions';
 
 const initialState = {
   isFetchingFriends: false,
-  fetchingFriendsFailure: false,
   fetchingFriendsSuccess: false,
   fetchingFriendsError: null,
+  isSendingFR: false,
+  sendFRSuccess: false,
+  sendFRError: null,
+  isAcceptingFR: false,
+  acceptFRSuccess: false,
+  acceptFRError: null,
+  isRejectingFR: false,
+  rejectFRSuccess: false,
+  rejectFRError: null,
   friends: [],
+  friendRequests: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +37,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingFriends: true,
+        fetchingFriendsError: null,
       }
     
     case FETCH_FRIENDS_FAILURE:
@@ -26,8 +45,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingFriends: false,
         fetchingFriendsSuccess: false,
-        fetchingFriendsFailure: true,
-        fetchingFriendsError: action.error,
+        fetchingFriendsError: action.message,
       }
 
     case FETCH_FRIENDS_SUCCESS:
@@ -35,11 +53,98 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingFriends: false,
         fetchingFriendsSuccess: true,
-        fetchingFriendsFailure: false,
-        fetchingFriendsError: null,
         friends: action.friends,
+        friendRequests: action.friendRequests,
+      }
+
+    case SEND_FR_REQUEST:
+      return {
+        ...state,
+        isSendingFR: true,
+        sendFRError: null,
+      }
+
+    case SEND_FR_FAILURE:
+      return {
+        ...state,
+        isSendingFR: false,
+        sendFRError: action.message,
+        sendFRSuccess: false,
+      }
+
+    case SEND_FR_SUCCESS: 
+      return {
+        ...state,
+        isSendingFR: false,
+        sendFRSuccess: true,
+      }
+
+    case ACCEPT_FR_REQUEST:
+      return {
+        ...state,
+        isAcceptingFR: true,
+        acceptFRError: null,
+      }
+
+    case ACCEPT_FR_FAILURE:
+      return {
+        ...state,
+        isAcceptingFR: false,
+        acceptFRError: action.message,
+        acceptFRSuccess: false,
+      }
+
+    case ACCEPT_FR_SUCCESS:
+      return {
+        ...state,
+        isAcceptingFR: false,
+        acceptFRSuccess: true,
+      }
+
+    case ACCEPT_FR_REQUEST:
+      return {
+        ...state,
+        isAcceptingFR: true,
+        acceptFRError: null,
+      }
+
+    case ACCEPT_FR_FAILURE:
+      return {
+        ...state,
+        isAcceptingFR: false,
+        acceptFRError: action.message,
+        acceptFRSuccess: false,
+      }
+
+    case ACCEPT_FR_SUCCESS:
+      return {
+        ...state,
+        isAcceptingFR: false,
+        acceptFRSuccess: true,
+      }
+
+    case REJECT_FR_REQUEST:
+      return {
+        ...state,
+        isRejectingFR: true,
+        rejectFRError: null,
       }
     
+    case REJECT_FR_FAILURE:
+      return {
+        ...state,
+        isRejectingFR: false,
+        rejectFRError: action.message,
+        rejectFRSuccess: false,
+      }
+
+    case REJECT_FR_SUCCESS:
+      return {
+        ...state,
+        isRejectingFR: false,
+        rejectFRSuccess: true,
+      }
+
     default:
       return state;
   }

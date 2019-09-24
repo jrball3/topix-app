@@ -42,6 +42,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingPosts: true,
+        fetchingPostsError: null,
       }
     
     case FETCH_POSTS_FAILURE:
@@ -49,7 +50,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingPosts: false,
         fetchingPostsSuccess: false,
-        fetchingPostsError: action.error,
+        fetchingPostsError: action.message,
       }
 
     case FETCH_POSTS_SUCCESS:
@@ -57,7 +58,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetchingPosts: false,
         fetchingPostsSuccess: true,
-        fetchingPostsError: null,
         posts: action.posts,
       }
 
@@ -77,7 +77,6 @@ const reducer = (state = initialState, action) => {
     case CREATE_POST_SUCCESS:
       return {
         ...state,
-        postCreationError: null,
         postCreationSuccess: true,
         isCreatingPost: false,
         posts: [
@@ -90,13 +89,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingScores: true,
+        fetchingPostsError: null,
       }
 
     case FETCH_SCORES_FAILURE:
       return {
         ...state,
         isFetchingScores: false,
-        fetchingScoresError: action.error,
+        fetchingScoresError: action.message,
         fetchingScoresSuccess: false,
       }
 
@@ -104,7 +104,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingScores: false,
-        fetchingScoresError: null,
         fetchingScoresSuccess: true,
         scores: action.scores,
       }

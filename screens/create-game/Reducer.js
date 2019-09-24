@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   gameName: '',
-  gameType: 'Karma Hole',
+  gameType: 'KARMA_HOLE',
   players: [],
   friends: [],
   isCreatingGame: false,
@@ -48,6 +48,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isCreatingGame: true,
+        gameCreationError: null,
       }
 
     case CREATE_GAME_FAILURE:
@@ -61,7 +62,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isCreatingGame: false,
-        gameCreationError: null,
         gameCreationSuccess: true,
       }
 
@@ -69,6 +69,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingFriends: true,
+        friendFetchingError: null,
       }
 
     case FETCH_FRIENDS_FAILURE:
@@ -83,7 +84,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetchingFriends: false,
-        friendFetchingError: null,
         friendFetchingSuccess: true,
         friends: action.friends || [],
       }

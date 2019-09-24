@@ -91,9 +91,6 @@ class CreateGameScreen extends React.Component {
       friends,
     } = this.props;
 
-    const buttonHeight = null; //60;
-    const scrollViewHeight = null; //Layout.window.height - buttonHeight;
-
     return (
       <ThemeProvider theme={TopixTheme}>
         <SafeAreaView style={{ 
@@ -107,7 +104,7 @@ class CreateGameScreen extends React.Component {
             <Text
               style={{
                 color: 'white',
-                fontSize: 30,
+                fontSize: 25,
                 marginVertical: 10,
                 fontWeight: '300',
               }}
@@ -175,7 +172,7 @@ class CreateGameScreen extends React.Component {
             <Button
               title="Create new game"
               onPress={this.handleCreateGame}
-              disabled={players.length < 3}
+              // disabled={players.length < 3}
             />
           </View>
         </SafeAreaView>
