@@ -23,20 +23,24 @@ export const checkSession = ({ navigation, authToken }) => async dispatch => {
   try {
     const checkResponse = await AuthAPI.check({ token: authToken })
     const { status, data } = checkResponse;
+    const { valid, user } = data;
+
     await dispatch({
       type: CHECK_SESSION_SUCCESS,
       status,
       data,
-      valid: true,
+      valid,
     });
-    
-    const session = {
-      user: data.user,
-      authToken,
-    }
 
-    await dispatch(setSession({ session }));
-    navigation.navigate("My Games")
+    if (valid) {
+      const session = {
+        user,
+        authToken,
+      }
+      
+      await dispatch(setSession({ session }));
+      navigation.navigate("My Games")
+    }
 
   } catch (error) {
     const { response, message } = error;

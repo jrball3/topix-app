@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
+  RefreshControl,
   Platform,
   StatusBar,
 } from 'react-native';
@@ -18,6 +19,7 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import { 
   fetchFriends,
+  fetchFriendRequests,
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
@@ -32,6 +34,7 @@ import AddFriendModal from './AddFriendModal';
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     fetchFriends,
+    fetchFriendRequests,
     sendFriendRequest,
     acceptFriendRequest,
     rejectFriendRequest,
@@ -75,9 +78,11 @@ class MyFriendsScreen extends React.Component {
   }
 
   performFetch() {
-    this.props.fetchFriends({
+    fetchObj = {
       authToken: this.props.session.authToken,
-    })
+    }
+    this.props.fetchFriends(fetchObj)
+    this.props.fetchFriendRequests(fetchObj)
   }
 
   handleSetAddFriendOpen(value) {
@@ -118,6 +123,12 @@ class MyFriendsScreen extends React.Component {
         contentContainerStyle={{
           justifyContent: 'flex-start',
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.isFetchingFriends || this.props.isFetchingFR}
+            onRefresh={this.performFetch}
+          />
+        }
       >
         {friendRequests.map((r, i) => (
           <FriendRequest
@@ -145,6 +156,12 @@ class MyFriendsScreen extends React.Component {
         contentContainerStyle={{
           justifyContent: 'flex-start',
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.isFetchingFriends || this.props.isFetchingFR}
+            onRefresh={this.performFetch}
+          />
+        }
       >
         {friends.map((g, i) => (
           <User

@@ -15,11 +15,18 @@ class FriendshipAPI {
     )
   }
 
+  static fetchRequests ({ authToken }) {
+    return axios.get(
+      urljoin(FRIENDS_API_URL, 'pending'),
+      getAxiosConfig(authToken),
+    )
+  }
+
   static sendFriendRequest ({ authToken, username }) {
     const data = { username };
     return axios.post(
       FRIENDS_API_URL,
-      ...data,
+      data,
       getAxiosConfig(authToken)
     )
   }

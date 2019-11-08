@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { View, Text } from 'react-native';
+import { Text, Platform } from 'react-native';
 import { Icon, Input, ThemeProvider, Button } from 'react-native-elements';
 import TopixTheme from '../../themes/TopixTheme';
-import Layout from '../../constants/Layout';
 import { updateField, createAccount } from './Actions';
 import { selectState } from './Helpers';
-import { NavigationActions, SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from 'react-navigation'
 
 
 const mapDispatchToProps = dispatch => {
@@ -36,7 +35,7 @@ const CreateAccountScreen = (props) => {
       <SafeAreaView style={{
         ...commonViewStyle,
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
         paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
       }}>
         <Text

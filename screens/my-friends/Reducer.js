@@ -2,6 +2,9 @@ import {
   FETCH_FRIENDS_REQUEST,
   FETCH_FRIENDS_FAILURE,
   FETCH_FRIENDS_SUCCESS,
+  FETCH_FR_REQUEST,
+  FETCH_FR_FAILURE,
+  FETCH_FR_SUCCESS,
   SEND_FR_REQUEST,
   SEND_FR_FAILURE,
   SEND_FR_SUCCESS,
@@ -17,6 +20,9 @@ const initialState = {
   isFetchingFriends: false,
   fetchingFriendsSuccess: false,
   fetchingFriendsError: null,
+  isFetchingFR: false,
+  fetchFRSuccess: true,
+  fetchFRError: null,
   isSendingFR: false,
   sendFRSuccess: false,
   sendFRError: null,
@@ -54,6 +60,28 @@ const reducer = (state = initialState, action) => {
         isFetchingFriends: false,
         fetchingFriendsSuccess: true,
         friends: action.friends,
+      }
+
+    case FETCH_FRIENDS_REQUEST:
+      return {
+        ...state,
+        isFetchingFR: true,
+        fetchFRError: null,
+      }
+
+    case FETCH_FR_FAILURE:
+        return {
+          ...state,
+          isFetchingFR: false,
+          fetchFRError: action.message,
+          fetchFRSuccess: false,
+        }
+
+    case FETCH_FR_SUCCESS:
+      return {
+        ...state,
+        isFetchingFR: false,
+        fetchFRSuccess: true,
         friendRequests: action.friendRequests,
       }
 
