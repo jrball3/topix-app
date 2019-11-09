@@ -42,7 +42,7 @@ export const createGame = ({
       authToken,
       name: gameName,
       type: gameType,
-      players,
+      players: players.map(p => p.username),
     })
     const { data } = createResponse;
     await dispatch({ 

@@ -26,6 +26,8 @@ import Post from '../../components/Post';
 import ChatInput from '../../components/ChatInput';
 import { Header } from 'react-navigation';
 import PlayGameHeader from './Header';
+import {Keyboard, TextInput} from 'react-native';
+
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
@@ -64,10 +66,23 @@ class PlayGameScreen extends React.Component {
     this.performFetch = this.performFetch.bind(this);
     this.handleUpvote = this.handleUpvote.bind(this);
     this.handleDownvote = this.handleDownvote.bind(this);
+    this.keyboardDidShow = this.keyboardDidShow.bind(this);
   }
-  
+
   componentDidMount() {
     this.performFetch();
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+  }
+
+  keyboardDidShow() {
+    this.scrollView.scrollToEnd({animated: true});
   }
 
   performFetch() {
@@ -109,7 +124,7 @@ class PlayGameScreen extends React.Component {
     const { posts } = this.props;
     return (
       <KeyboardAvoidingView
-        keyboardVerticalOffset = {Header.HEIGHT + 20}
+        keyboardVerticalOffset = {Header.HEIGHT + 40}
         style={{
           flex: 1,
           justifyContent: 'flex-end',

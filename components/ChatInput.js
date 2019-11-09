@@ -57,6 +57,7 @@ class ChatInput extends React.Component {
           rightIconContainerStyle={{
             marginRight: 15,
           }}
+          onBlur={this.props.onBlur}
         />
         </ThemeProvider>
       </View>

@@ -27,7 +27,8 @@ class Post extends React.PureComponent {
         height: 100,
         borderRadius: 20,
         padding: 15,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
       }}>
 
         {/* Message / Upper Row */}

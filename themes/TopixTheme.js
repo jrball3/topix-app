@@ -13,6 +13,7 @@ const Colors = {
   warningText: '#666804',
   noticeBackground: tintColor,
   noticeText: '#fff',
+  lightBackgroundColor: '#ffefbf',
   backgroundColor: '#fbd157',
   foregroundColor: '#54445b',
   textColor: '#fff',
